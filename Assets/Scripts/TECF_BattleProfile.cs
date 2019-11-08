@@ -2,35 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "TECF/BattleProfile")]
 public class TECF_BattleProfile : ScriptableObject
 {
     [Tooltip("Name to display in combat")]
-    string battleName;
+    public string entityName;
 
     [Tooltip("Visual representation of the enemy in combat.")]
-    Sprite battleSprite;
+    public Sprite battleSprite;
     [Tooltip("Static image to use in the background if fighting the entity.")]
-    Sprite battleBG;
+    public Sprite battleBG;
 
     [Tooltip("Set of audio cues to use in battle." +
         "\nINTRO=Track to play when combat starts if entity is enemy. If not set then LOOP will be used instead." +
         "\nLOOP=Track to play on loop during combat if entity is enemy.")]    // TODO: List names of pre-set audio cues
-    AudioSystem battleSFX;
+    public List<AudioSystem.AudioNode> battleSFX = new List<AudioSystem.AudioNode>();
 
     [Tooltip("Hit points, if this reaches 0 then the entity will be defeated.")]
-    int hp;
+    public int hp;
     [Tooltip("Power points, this will reduce when the entity uses power moves.")]
-    int power;
+    public int power;
     [Tooltip("Increases the chance of dealing a critical attack with a regular attack.")]
-    int guts;
+    public int guts;
     [Tooltip("Increases the chance an attack is dodged.")]
-    int luck;
+    public int luck;
     [Tooltip("Determines who goes first in battle.")]
-    int speed;
-    [Tooltip("Lowers damage from attacks.")]
-    int defense;
+    public int speed;
     [Tooltip("Determines how much damage is dealt with regular attacks")]
-    int offense;
+    public int offense;
+    [Tooltip("Lowers damage from attacks.")]
+    public int defense;
 
     // TODO: Add list of powers
 }

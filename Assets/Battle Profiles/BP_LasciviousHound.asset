@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d5b3dc90b86f7340b0119f2657c9ed4, type: 3}
+  m_Name: BP_LasciviousHound
+  m_EditorClassIdentifier: 
+  entityName: Lascivious Hound
+  battleSprite: {fileID: 21300000, guid: a2802fbdd9835774aa8cb85a7c4e3667, type: 3}
+  battleBG: {fileID: 21300000, guid: 70945476cb9f44d41aba7adadadaeb23, type: 3}
+  battleSFX:
+  - alias: LOOP
+    audio: {fileID: 8300000, guid: 9ed51a36567ae3343aae7e95e72dd4dc, type: 3}
+  hp: 500
+  power: 20
+  guts: 12
+  luck: 12
+  speed: 31
+  offense: 168
+  defense: 230

@@ -7,6 +7,7 @@ public class AudioSystem : MonoBehaviour {
 	
 	[System.Serializable]
 	public struct AudioNode {
+        [Tooltip("Name of the audio clip")]
 		public string		alias;      // Name by which the audio clip is known as
 		public AudioClip	audio;		// Audio clip to be loaded into an audio source
 	}
@@ -26,7 +27,7 @@ public class AudioSystem : MonoBehaviour {
         public float        o_pitch;
     }
 
-	public List<AudioNode> audioFiles;
+	public List<AudioNode> audioFiles = new List<AudioNode>();
 
 	AudioSource targetSource;			// Which audio source to play the clips from
 
@@ -116,11 +117,24 @@ public class AudioSystem : MonoBehaviour {
         targetSource.PlayOneShot(playInfo.o_clip, playInfo.volume);
     }
 
+    public bool HasClip(string a_alias)
+    {
+        foreach (var file in audioFiles)
+        {
+            if (file.alias == a_alias)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public void StopCurrentClip() {
 	    targetSource.Stop();
 	}
 
-    public void SetLooping(int b_loop) {
-        targetSource.loop = b_loop == 0 ? false : true;
+    public void SetLooping(bool b_loop) {
+        targetSource.loop = b_loop;
     }
 }
