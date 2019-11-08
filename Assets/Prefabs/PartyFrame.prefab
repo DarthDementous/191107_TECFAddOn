@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 742465722367989002}
   - component: {fileID: 7134266310213749221}
   m_Layer: 5
-  m_Name: Counter
+  m_Name: CounterBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -360,7 +360,7 @@ GameObject:
   - component: {fileID: 5239286584177450931}
   - component: {fileID: 3957637137296668692}
   m_Layer: 5
-  m_Name: Counter
+  m_Name: CounterBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -603,7 +603,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_textAlignment: 514
   m_characterSpacing: 18.5
   m_wordSpacing: 0
@@ -761,7 +761,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_textAlignment: 514
   m_characterSpacing: 18.5
   m_wordSpacing: 0
