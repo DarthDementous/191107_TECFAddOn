@@ -26,5 +26,8 @@ public class DialogManager : MonoBehaviour
             yield return new WaitForSeconds(charDelay);
             ref_dialogTxt.text += letter;
         }
+
+        // TODO: Make it so the end intro event only gets called for the intro dialog
+        EventManager.TriggerEvent("EndIntro");
     }
 }

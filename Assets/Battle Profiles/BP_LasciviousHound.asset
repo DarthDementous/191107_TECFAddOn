@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: BP_LasciviousHound
   m_EditorClassIdentifier: 
   entityName: Lascivious Hound
-  battleSprite: {fileID: 21300000, guid: a2802fbdd9835774aa8cb85a7c4e3667, type: 3}
+  battleSprite: {fileID: 21300000, guid: c42ee87a5fc582145bf2f77dbf00870e, type: 3}
   battleBG: {fileID: 21300000, guid: 70945476cb9f44d41aba7adadadaeb23, type: 3}
   battleSFX:
   - alias: LOOP
-    audio: {fileID: 8300000, guid: 9ed51a36567ae3343aae7e95e72dd4dc, type: 3}
+    audio: {fileID: 8300000, guid: 33fd6f164464eb043b84ba04311c5e63, type: 3}
+  - alias: INTRO
+    audio: {fileID: 8300000, guid: fe9c3dcfb99f0894fa656bdf4e583956, type: 3}
   hp: 500
   power: 20
   guts: 12

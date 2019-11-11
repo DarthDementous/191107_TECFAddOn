@@ -98,12 +98,38 @@ public class AudioSystem : MonoBehaviour {
         // No alternate audio source provided, use set target
         if (!source) { source = targetSource; }
 
-        // Set audio source clip in order to loop sound constantly
-        source.pitch = playInfo.o_pitch;
-        source.clip  = playInfo.o_clip; 
+        // Set audio source clip info
+        source.pitch    = playInfo.o_pitch;
+        source.clip     = playInfo.o_clip;
+        source.volume   = playInfo.volume;
 
 		source.Play();
 	}
+
+    public void PlayClipWithDelay(string a_audioString, float a_delayS, bool a_bPreload = false)
+    {
+        StartCoroutine(DelayPlayClip(a_audioString, a_delayS, a_bPreload));
+    }
+
+    IEnumerator DelayPlayClip(string a_audioString, float a_delayS, bool a_bPreload = false)
+    {
+        // Load clip before the delay to avoid stuttering
+        if (a_bPreload)
+        {
+            PlayInfo playInfo = InterpretPlayString(a_audioString);
+            targetSource.clip = playInfo.o_clip;
+            targetSource.pitch = playInfo.o_pitch;
+            targetSource.volume = playInfo.volume;
+
+            targetSource.PlayDelayed(a_delayS);
+        }
+
+        else
+        {
+            yield return new WaitForSeconds(a_delayS);
+            PlayClip(a_audioString);
+        }
+    }
 
 	/**
 	 * @brief Find and play a random clip from a list of clips that contain the given alias.
@@ -117,17 +143,17 @@ public class AudioSystem : MonoBehaviour {
         targetSource.PlayOneShot(playInfo.o_clip, playInfo.volume);
     }
 
-    public bool HasClip(string a_alias)
+    public AudioClip HasClip(string a_alias)
     {
         foreach (var file in audioFiles)
         {
             if (file.alias == a_alias)
             {
-                return true;
+                return file.audio;
             }
         }
 
-        return false;
+        return null;
     }
 
     public void StopCurrentClip() {

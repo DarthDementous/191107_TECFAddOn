@@ -23,6 +23,7 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
+        /// Enemies
         TECF_BattleProfile priorityEnemy = enemies[0];  // Enemy in first slot influences visuals and audio of whole battle
 
         Debug.Assert(priorityEnemy, "BATTLEMANAGER::No enemies set!");
@@ -33,18 +34,38 @@ public class BattleManager : MonoBehaviour
         // Set enemy background
         ReferenceManager.Instance.enemyBG.sprite = priorityEnemy.battleBG;
 
-        // Add enemy audio to main system
+        // Add enemy audio to main system and secondary systems
         ReferenceManager.Instance.mainAudio.audioFiles.AddRange(priorityEnemy.battleSFX);
+        ReferenceManager.Instance.secondaryAudio.audioFiles.AddRange(priorityEnemy.battleSFX);
 
         // Start battle music, playing intro first if there is one
-        if (ReferenceManager.Instance.mainAudio.HasClip("INTRO"))
+        AudioClip introClip = ReferenceManager.Instance.mainAudio.HasClip("INTRO");
+
+        if (introClip)
         {
-            // TODO: Add logic for intro music here
+            // Play intro and then play main loop after it
+            ReferenceManager.Instance.mainAudio.SetLooping(false);
+            ReferenceManager.Instance.mainAudio.PlayClip("{\"alias\":\"INTRO\",\"volume\":1}");
+
+            ReferenceManager.Instance.secondaryAudio.SetLooping(true);
+            ReferenceManager.Instance.secondaryAudio.PlayClipWithDelay("{\"alias\":\"LOOP\",\"volume\":1}", introClip.length, true);
         }
         else if (ReferenceManager.Instance.mainAudio.HasClip("LOOP"))
         {
             ReferenceManager.Instance.mainAudio.SetLooping(true);
             ReferenceManager.Instance.mainAudio.PlayClip("{\"alias\":\"LOOP\",\"volume\":1}");
+        }
+
+        /// Party members
+        foreach (var pm in partyMembers)
+        {
+            GameObject pmObj        = Instantiate(Resources.Load("PartyMember") as GameObject);
+            TECF_BattleEntity pmBe  = pmObj.GetComponent<TECF_BattleEntity>();
+
+            // Assign battle profile
+            pmBe.BattleProfile = pm;
+
+            pmObj.transform.SetParent(ReferenceManager.Instance.partyPanel.transform);
         }
     }
 }

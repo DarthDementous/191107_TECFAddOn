@@ -243,8 +243,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8493998299927349659}
+  - component: {fileID: 6181653213557043410}
   m_Layer: 5
-  m_Name: PartyFrame
+  m_Name: PartyMember
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -274,6 +275,23 @@ RectTransform:
   m_AnchoredPosition: {x: 204, y: -732}
   m_SizeDelta: {x: 365, y: 319}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &6181653213557043410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5303166195149033651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e817d053119194644841750031990aeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityType: 0
+  currentStatus: 0
+  healthTxt: {fileID: 2195712079193593949}
+  powerTxt: {fileID: 6802245288113463088}
+  nameTxt: {fileID: 5352412596244438612}
 --- !u!1 &5866298580842264492
 GameObject:
   m_ObjectHideFlags: 0

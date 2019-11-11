@@ -13,6 +13,9 @@ public class ReferenceManager : MonoBehaviour
     public Image enemyBG;
 
     public AudioSystem mainAudio;
+    public AudioSystem secondaryAudio;
+
+    public GameObject partyPanel;
 
     private void Awake()
     {

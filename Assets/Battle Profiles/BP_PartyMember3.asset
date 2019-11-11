@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d5b3dc90b86f7340b0119f2657c9ed4, type: 3}
+  m_Name: BP_PartyMember3
+  m_EditorClassIdentifier: 
+  entityName: Bort
+  battleSprite: {fileID: 0}
+  battleBG: {fileID: 0}
+  battleSFX: []
+  hp: 50
+  power: 80
+  guts: 20
+  luck: 10
+  speed: 20
+  offense: 80
+  defense: 40
