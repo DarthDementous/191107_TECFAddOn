@@ -86,7 +86,7 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < partyMembers.Length; ++i)
         {
             GameObject pmObj        = Instantiate(Resources.Load("PartyMember") as GameObject);
-            TECF_PartyEntity pmPe  = pmObj.GetComponent<TECF_PartyEntity>();
+            TECF_PartyEntity pmPe   = pmObj.GetComponentInChildren<TECF_PartyEntity>();
 
             // Assign battle profile
             pmPe.BattleProfile = partyMembers[i];

@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc58c348ca8e7d64789db09464b1f357, type: 3}
-  m_Name: PLAYER_TURN
+  m_Script: {fileID: 11500000, guid: dd6e4e2d885bf0e49b5276c8fba2e714, type: 3}
+  m_Name: ENEMY_SELECT
   m_EditorClassIdentifier: 
   debugColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_actions: []
   m_transitions:
-  - {fileID: 11400000, guid: 9911324d2be7b564b93c4ac1c1e26742, type: 2}
+  - {fileID: 11400000, guid: a6f783c39b9c01c418a5ea2d53494bf0, type: 2}

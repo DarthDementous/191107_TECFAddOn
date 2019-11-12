@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc58c348ca8e7d64789db09464b1f357, type: 3}
-  m_Name: PLAYER_TURN
+  m_Script: {fileID: 11500000, guid: 0a430bfe64fd1714f88fb86d203bbaa8, type: 3}
+  m_Name: PlayerTurnToEnemySelect
   m_EditorClassIdentifier: 
-  debugColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  m_actions: []
-  m_transitions:
-  - {fileID: 11400000, guid: 9911324d2be7b564b93c4ac1c1e26742, type: 2}
+  transitionState: {fileID: 11400000, guid: 3dbf9a35c36974b45b0ba92c50b5fcc7, type: 2}
+  b_useString: 1
+  eventName: EnemySelect

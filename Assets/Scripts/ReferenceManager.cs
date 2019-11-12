@@ -19,6 +19,7 @@ public class ReferenceManager : MonoBehaviour
     public GameObject dialogPanel;
     public GameObject actionPanel;
     public GameObject enemyPanel;
+    public GameObject enemySelectPanel;
 
     public Text actionPanelName;
 

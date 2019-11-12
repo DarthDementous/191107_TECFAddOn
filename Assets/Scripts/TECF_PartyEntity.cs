@@ -12,7 +12,7 @@ public class TECF_PartyEntity : TECF_BattleEntity
     public ePartySlot partySlot;
 
     [Tooltip("How high up to move the party frame when in the ready position.")]
-    public float readyOffset = 500f;
+    public float readyOffset = 50f;
 
     private void OnEnable()
     {
@@ -34,7 +34,7 @@ public class TECF_PartyEntity : TECF_BattleEntity
             ReferenceManager.Instance.actionPanelName.text = battleProfile.entityName;
 
             // Visually move into ready position
-            gameObject.transform.Translate(0, readyOffset, 0);
+            gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, readyOffset, gameObject.transform.localPosition.z);
         }
     }
 }

@@ -104,4 +104,9 @@ public class EventManager : MonoBehaviour {
             foundEvent.Invoke(a_eventInfo);
         }
     }
+
+    public void CallEvent(string a_eventName)
+    {
+        TriggerEvent(a_eventName);
+    }
 }
