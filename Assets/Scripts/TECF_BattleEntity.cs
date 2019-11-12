@@ -24,9 +24,6 @@ public enum eStatusEffect       // TODO: Add explanations for status effects
 
 public class TECF_BattleEntity : MonoBehaviour
 {
-    [Tooltip("NONE=Default, should never be set to this." +
-        "\nENEMY=The player party will fight against them" +
-        "PARTY=The player party will fight with them")]
     public eEntityType entityType;
 
     [Tooltip("Current affliction on the entity, will affect their behaviour if it isn't NORMAL")]
@@ -35,6 +32,7 @@ public class TECF_BattleEntity : MonoBehaviour
     public TextMeshProUGUI healthTxt;
     public TextMeshProUGUI powerTxt;
     public Text            nameTxt;
+    public Image           entityImg;
 
     public TECF_BattleProfile BattleProfile
     {
@@ -51,7 +49,10 @@ public class TECF_BattleEntity : MonoBehaviour
             Power   = battleProfile.power;
 
             // Set name
-            nameTxt.text = battleProfile.entityName;
+            if (nameTxt) nameTxt.text = battleProfile.entityName;
+
+            // Set sprite
+            if (entityImg) entityImg.sprite = battleProfile.battleSprite;
         }
     }
 
@@ -66,7 +67,7 @@ public class TECF_BattleEntity : MonoBehaviour
             hp = value;
 
             // Set text to formatted version of hp
-            healthTxt.text = NumToDisplay(hp);
+            if (healthTxt) healthTxt.text = NumToDisplay(hp);
         }
     }
     public int Power
@@ -80,20 +81,19 @@ public class TECF_BattleEntity : MonoBehaviour
             power = value;
 
             // Set text to formatted version of hp
-            powerTxt.text = NumToDisplay(power);
+            if (powerTxt) powerTxt.text = NumToDisplay(power);
         }
     }
 
-
-    TECF_BattleProfile battleProfile;
-    int hp;
-    int power;
-
-    [HideInInspector]
-    StateManager m_stateManager;    // TODO: Get reference to state manager on object
+    protected TECF_BattleProfile battleProfile;
+    protected int hp;
+    protected int power;
 
     [HideInInspector]
-    bool b_autoFight;   // Whether AI should take over for this entity or be player controlled
+    protected StateManager m_stateManager;    // TODO: Get reference to state manager on object
+
+    [HideInInspector]
+    protected bool b_autoFight;   // Whether AI should take over for this entity or be player controlled
 
     /**
      * @brief Convert number to display friendly version.

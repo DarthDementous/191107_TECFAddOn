@@ -9,13 +9,18 @@ public class ReferenceManager : MonoBehaviour
 
     static ReferenceManager m_stn;
 
-    public Image enemyImg;      // TODO: Add support for multiple enemy images
+    //public Image enemyImg;      // TODO: Add support for multiple enemy images
     public Image enemyBG;
 
     public AudioSystem mainAudio;
     public AudioSystem secondaryAudio;
 
     public GameObject partyPanel;
+    public GameObject dialogPanel;
+    public GameObject actionPanel;
+    public GameObject enemyPanel;
+
+    public Text actionPanelName;
 
     private void Awake()
     {

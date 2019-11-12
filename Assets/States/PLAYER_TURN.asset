@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3666c5242d1038846a7eeffaef7eb23c, type: 3}
+  m_Script: {fileID: 11500000, guid: dc58c348ca8e7d64789db09464b1f357, type: 3}
   m_Name: PLAYER_TURN
   m_EditorClassIdentifier: 
   debugColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}

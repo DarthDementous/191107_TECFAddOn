@@ -9,10 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 619f0d06779d961479fa90ba44e1055f, type: 3}
-  m_Name: INTRO
+  m_Script: {fileID: 11500000, guid: 9881ff2591753a84fa653660adb56675, type: 3}
+  m_Name: PlayerTurnGUI
   m_EditorClassIdentifier: 
-  debugColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  m_actions: []
-  m_transitions:
-  - {fileID: 11400000, guid: fcf13cc4c068c594b81be04fc8ea9a67, type: 2}

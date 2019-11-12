@@ -5,6 +5,9 @@ using System.Linq;
 
 public class BattleManager : MonoBehaviour
 {
+    public static BattleManager Instance { get { return m_stn; } }
+    static BattleManager m_stn;
+
     [Tooltip("List of enemies for the party to fight. Battle music and background will be determined by the enemy in slot 0")]
     public TECF_BattleProfile[] enemies;
 
@@ -21,15 +24,26 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        // Only one instance allowed, destroy object
+        if (m_stn != null && m_stn != this)
+        {
+            Debug.LogError("REFERENCEMANAGER::Only one instance allowed of this script! Destroying object.");
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            m_stn = this;
+        }
+    }
+
     private void Start()
     {
-        /// Enemies
+        /// Priority enemy
         TECF_BattleProfile priorityEnemy = enemies[0];  // Enemy in first slot influences visuals and audio of whole battle
 
         Debug.Assert(priorityEnemy, "BATTLEMANAGER::No enemies set!");
-
-        // Set enemy sprite
-        ReferenceManager.Instance.enemyImg.sprite = priorityEnemy.battleSprite;
 
         // Set enemy background
         ReferenceManager.Instance.enemyBG.sprite = priorityEnemy.battleBG;
@@ -56,14 +70,29 @@ public class BattleManager : MonoBehaviour
             ReferenceManager.Instance.mainAudio.PlayClip("{\"alias\":\"LOOP\",\"volume\":1}");
         }
 
-        /// Party members
-        foreach (var pm in partyMembers)
+        /// Enemies
+        for (int i = 0; i < enemies.Length; ++i)
         {
-            GameObject pmObj        = Instantiate(Resources.Load("PartyMember") as GameObject);
-            TECF_BattleEntity pmBe  = pmObj.GetComponent<TECF_BattleEntity>();
+            GameObject          eObj    = Instantiate(Resources.Load("Enemy") as GameObject);
+            TECF_BattleEntity   eBe     = eObj.GetComponent<TECF_BattleEntity>();
 
             // Assign battle profile
-            pmBe.BattleProfile = pm;
+            eBe.BattleProfile = enemies[i];
+
+            eObj.transform.SetParent(ReferenceManager.Instance.enemyPanel.transform);
+        }
+
+        /// Party members
+        for (int i = 0; i < partyMembers.Length; ++i)
+        {
+            GameObject pmObj        = Instantiate(Resources.Load("PartyMember") as GameObject);
+            TECF_PartyEntity pmPe  = pmObj.GetComponent<TECF_PartyEntity>();
+
+            // Assign battle profile
+            pmPe.BattleProfile = partyMembers[i];
+
+            // Set to relevant slot
+            pmPe.partySlot = (ePartySlot)i;
 
             pmObj.transform.SetParent(ReferenceManager.Instance.partyPanel.transform);
         }

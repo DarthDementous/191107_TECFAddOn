@@ -9,13 +9,6 @@ public class IEventInfo  {
     public GameObject target;      // Who the event was targeted at
 }
 
-
-public class DeathInfo : IEventInfo {
-
-    public eEntityType entityType;
-}
-
-
 public class GameplayEvent : UnityEvent<IEventInfo> { }
 
 /**
