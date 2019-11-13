@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transitionState: {fileID: 11400000, guid: 3dbf9a35c36974b45b0ba92c50b5fcc7, type: 2}
   b_useString: 1
-  eventName: EnemySelect
+  eventName: EnemySelecting

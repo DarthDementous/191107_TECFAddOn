@@ -17,12 +17,28 @@ public class PartyInfo : IEventInfo
     public ePartySlot partySlot;
 }
 
+public class EnemyInfo : IEventInfo
+{
+    public eEnemySlot enemySlot;
+}
+
 public enum ePartySlot
 {
+    NONE = -1,
     SLOT_1,
     SLOT_2,
     SLOT_3,
     SLOT_4
+}
+
+public enum eEnemySlot
+{
+    A,
+    B,
+    C,
+    D,
+    E,
+    F
 }
 
 // Static utility helper class

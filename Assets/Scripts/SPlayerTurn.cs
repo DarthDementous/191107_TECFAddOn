@@ -10,8 +10,8 @@ public class SPlayerTurn : IState
         // Show player turn GUI
         ReferenceManager.Instance.actionPanel.SetActive(true);
 
-        // Move first party member into ready position
-        EventManager.TriggerEvent("OnPartyReady", new PartyInfo { partySlot = ePartySlot.SLOT_1 });
+        // Decide which party member goes first
+        EventManager.TriggerEvent("NextPartyMember");
     }
 
     public override void Shutdown(StateManager a_controller)

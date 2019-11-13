@@ -582,6 +582,7 @@ MonoBehaviour:
   enemyPanel: {fileID: 581984989}
   enemySelectPanel: {fileID: 193556633}
   actionPanelName: {fileID: 670366805}
+  enemySelectPanelText: {fileID: 2139745723}
 --- !u!1001 &420449555
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3562,7 +3563,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: To the Lascivious Hound
+  m_text: To
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0381b654a4a710a4d800eb679479a61c, type: 2}
   m_sharedMaterial: {fileID: -497075740997196198, guid: 0381b654a4a710a4d800eb679479a61c,
@@ -3818,7 +3819,7 @@ PrefabInstance:
     - target: {fileID: 1283310979623103647, guid: 62cf89395158ce94b8f1bcd5305832f0,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: EnemySelect
+      value: EnemySelecting
       objectReference: {fileID: 0}
     - target: {fileID: 6727800032998527387, guid: 62cf89395158ce94b8f1bcd5305832f0,
         type: 3}

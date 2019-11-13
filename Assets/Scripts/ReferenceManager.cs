@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ReferenceManager : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class ReferenceManager : MonoBehaviour
     public GameObject enemySelectPanel;
 
     public Text actionPanelName;
+    public TextMeshProUGUI enemySelectPanelText;
 
     private void Awake()
     {

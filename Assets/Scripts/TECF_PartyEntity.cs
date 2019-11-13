@@ -17,11 +17,24 @@ public class TECF_PartyEntity : TECF_BattleEntity
     private void OnEnable()
     {
         EventManager.StartListening("OnPartyReady", OnPartyReady);
+        EventManager.StartListening("PartyUnready", OnPartyUnready);
     }
 
     private void OnDisable()
     {
         EventManager.StopListening("OnPartyReady", OnPartyReady);
+        EventManager.StopListening("PartyUnready", OnPartyUnready);
+    }
+
+    void OnPartyUnready(IEventInfo a_info)
+    {
+        PartyInfo partyInfo = a_info as PartyInfo;
+
+        if (partyInfo != null && partyInfo.partySlot == partySlot)
+        {
+            // Reset position to default
+            gameObject.transform.localPosition = Vector3.zero;
+        }
     }
 
     void OnPartyReady(IEventInfo a_info)

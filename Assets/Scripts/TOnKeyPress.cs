@@ -5,20 +5,31 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
+[System.Serializable]
+public struct KeyEventObj
+{
+    public KeyCode key;
+    public string eventName;
+}
+
 [CreateAssetMenu(menuName = "FSM/Transitions/OnKeyPress")]
 public class TOnKeyPress : ITransition
 {
-    public KeyCode key;
+    public KeyEventObj[] keyEvents;
 
     public override bool Decide(StateManager a_controller)
     {
-        if (Input.GetKeyDown(key))
+        foreach (var ke in keyEvents)
         {
-            return true;
+            if (Input.GetKeyDown(ke.key))
+            {
+                // Fire event if specified
+                if (ke.eventName != "") EventManager.TriggerEvent(ke.eventName);
+
+                return true;
+            }
         }
-        else
-        {
-            return false;
-        }
+
+        return false;
     }
 }

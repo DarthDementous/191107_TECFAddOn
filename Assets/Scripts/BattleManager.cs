@@ -14,6 +14,46 @@ public class BattleManager : MonoBehaviour
     [Tooltip("List of party members (maximum 4)")]
     public TECF_BattleProfile[] partyMembers = new TECF_BattleProfile[4];
 
+    public ePartySlot currPartySlot;
+    public eEnemySlot currEnemySelect;
+
+    private void OnEnable()
+    {
+        EventManager.StartListening("NextPartyMember", OnNextPartyMember);
+        EventManager.StartListening("ConfirmEnemySelect", OnConfirmEnemySelect);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.StopListening("NextPartyMember", OnNextPartyMember);
+        EventManager.StopListening("ConfirmEnemySelect", OnConfirmEnemySelect);
+    }
+
+    void OnConfirmEnemySelect(IEventInfo a_info)
+    {
+        // TODO: Add attack information to the queue
+        EventManager.TriggerEvent("NextPartyMember");
+    }
+
+    void OnNextPartyMember(IEventInfo a_info)
+    {
+        // Unready previous party member (if there was one)
+        if (currPartySlot != ePartySlot.NONE) EventManager.TriggerEvent("PartyUnready", new PartyInfo { partySlot = currPartySlot });
+
+        // Decide which party member should have the next turn
+        if ((int)currPartySlot + 1 < partyMembers.Length)
+        {
+            currPartySlot++;
+        }
+        else
+        {
+            currPartySlot = ePartySlot.SLOT_1;
+        }
+
+        // Ready new party member
+        EventManager.TriggerEvent("OnPartyReady", new PartyInfo { partySlot = currPartySlot });
+    }
+
     public void OnValidate()
     {
         // Force number of party members to max of 4
@@ -40,6 +80,8 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
+        currPartySlot = ePartySlot.NONE;
+
         /// Priority enemy
         TECF_BattleProfile priorityEnemy = enemies[0];  // Enemy in first slot influences visuals and audio of whole battle
 
@@ -74,10 +116,13 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < enemies.Length; ++i)
         {
             GameObject          eObj    = Instantiate(Resources.Load("Enemy") as GameObject);
-            TECF_BattleEntity   eBe     = eObj.GetComponent<TECF_BattleEntity>();
+            TECF_EnemyEntity   eEe     = eObj.GetComponent<TECF_EnemyEntity>();
 
             // Assign battle profile
-            eBe.BattleProfile = enemies[i];
+            eEe.BattleProfile = enemies[i];
+
+            // Set to relevant slot
+            eEe.enemySlot = (eEnemySlot)i;
 
             eObj.transform.SetParent(ReferenceManager.Instance.enemyPanel.transform);
         }

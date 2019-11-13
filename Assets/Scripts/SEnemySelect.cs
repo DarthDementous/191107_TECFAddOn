@@ -10,6 +10,9 @@ public class SEnemySelect : IState
         // Show enemy select GUI
         ReferenceManager.Instance.actionPanel.SetActive(true);
         ReferenceManager.Instance.enemySelectPanel.SetActive(true);
+
+        // Select first enemy by default
+        EventManager.TriggerEvent("SelectEnemy", new EnemyInfo { enemySlot = eEnemySlot.A });
     }
 
     public override void Shutdown(StateManager a_controller)
@@ -18,6 +21,6 @@ public class SEnemySelect : IState
         ReferenceManager.Instance.enemySelectPanel.SetActive(false);
 
         // Deactivate selecting state on enemies
-        EventManager.TriggerEvent("EnemyUnselect");
+        EventManager.TriggerEvent("EnemyUnselecting");
     }
 }

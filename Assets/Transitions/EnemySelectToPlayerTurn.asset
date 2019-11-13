@@ -13,4 +13,8 @@ MonoBehaviour:
   m_Name: EnemySelectToPlayerTurn
   m_EditorClassIdentifier: 
   transitionState: {fileID: 11400000, guid: 175951716227c4342b13c7c54654f6e6, type: 2}
-  key: 27
+  keyEvents:
+  - key: 8
+    eventName: 
+  - key: 13
+    eventName: NextPartyMember
