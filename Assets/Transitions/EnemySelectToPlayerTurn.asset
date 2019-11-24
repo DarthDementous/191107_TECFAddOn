@@ -17,4 +17,4 @@ MonoBehaviour:
   - key: 8
     eventName: 
   - key: 13
-    eventName: NextPartyMember
+    eventName: 
