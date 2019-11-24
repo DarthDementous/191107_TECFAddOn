@@ -17,6 +17,8 @@ public class BattleManager : MonoBehaviour
     public ePartySlot currPartySlot;
     public eEnemySlot currEnemySelect;
 
+    public float BaseDecayRate = 0.05f;
+
     private void OnEnable()
     {
         EventManager.StartListening("NextPartyMember", OnNextPartyMember);

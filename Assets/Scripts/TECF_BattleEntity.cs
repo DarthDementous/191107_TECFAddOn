@@ -33,6 +33,8 @@ public class TECF_BattleEntity : MonoBehaviour
     public TextMeshProUGUI powerTxt;
     public Text            nameTxt;
     public Image           entityImg;
+    public GameObject hpObj;
+    public GameObject ppObj;
 
     public TECF_BattleProfile BattleProfile
     {
@@ -66,8 +68,17 @@ public class TECF_BattleEntity : MonoBehaviour
         {
             hp = value;
 
-            // Set text to formatted version of hp
-            if (healthTxt) healthTxt.text = NumToDisplay(hp);
+            // Set visual counter values to hp
+            if (hpObj)
+            {
+                var counterHP = NumToDisplay(hp);
+                var counterVals = hpObj.GetComponentsInChildren<NumberScroller>();
+
+                for (int i = 0; i < counterVals.Length; ++i)
+                {
+                    counterVals[i].CurrentNum = counterHP[i];
+                }
+            }
         }
     }
     public int Power
@@ -81,7 +92,7 @@ public class TECF_BattleEntity : MonoBehaviour
             power = value;
 
             // Set text to formatted version of hp
-            if (powerTxt) powerTxt.text = NumToDisplay(power);
+            //if (powerTxt) powerTxt.text = NumToDisplay(power);
         }
     }
 
@@ -97,31 +108,83 @@ public class TECF_BattleEntity : MonoBehaviour
 
     /**
      * @brief Convert number to display friendly version.
-     * @return Display friendly version of number. E.g. 120 = "1 2 0" or 20 = "0 2 0"
+     * @return Display friendly version of number. E.g. 1 = {0,0,1} or 20 = {0,2,0}
      * */
-    public string NumToDisplay(int a_num)
+    public int[] NumToDisplay(int a_num)
     {
         char[] numStr   = a_num.ToString().ToCharArray();
         int digits      = numStr.Length;
-        string output   = "";
+        int[] output    = new int[] { 0, 0, 0};
 
         // 1 digit
         switch (digits)
         {
             case 1:
-                output = "0 0 " + numStr[0];
+                output[0] = 0;
+                output[1] = 0;
+                output[2] = int.Parse(numStr[0].ToString());
+                //output = "00" + numStr[0];
                 break;
             case 2:
-                output = "0 " + numStr[0] + " " + numStr[1];
+                output[0] = 0;
+                output[1] = int.Parse(numStr[0].ToString());
+                output[2] = int.Parse(numStr[1].ToString());
+                //output = "0" + numStr[0] + "" + numStr[1];
                 break;
             case 3:
-                output = numStr[0] + " " + numStr[1] + " " + numStr[2];
+                output[0] = int.Parse(numStr[0].ToString());
+                output[1] = int.Parse(numStr[1].ToString());
+                output[2] = int.Parse(numStr[2].ToString());
+                //output = "" + numStr[0] + "" + numStr[1] + "" + numStr[2];
                 break;
             default:
-                output = (digits != 0) ? "9 9 9" : "0 0 0";
+                output = (digits != 0) ? new int[]{ 9,9,9} : new int[]{ 0,0,0};
                 break;
         }
 
         return output;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            StartCoroutine("OnTakeDamage", 50);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            StartCoroutine("OnHeal", 15);
+        }
+
+        if (entityType == eEntityType.PARTY)
+        {
+            Debug.Log(Hp);
+        }
+    }
+
+    IEnumerator OnTakeDamage(int a_dmg)
+    {
+        // TODO: Hook up to incoming damage
+
+        int targetHealth = Hp - a_dmg;
+
+        while (Hp > targetHealth)
+        {
+            Hp--;
+
+            yield return new WaitForSeconds(BattleManager.Instance.BaseDecayRate);
+        }
+    }
+
+    IEnumerator OnHeal(int a_healAmount)
+    {
+        int targetHealth = Hp + a_healAmount;
+
+        while (Hp < targetHealth)
+        {
+            Hp++;
+
+            yield return new WaitForSeconds(BattleManager.Instance.BaseDecayRate);
+        }
     }
 }
