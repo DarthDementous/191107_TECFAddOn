@@ -14,6 +14,9 @@ public class TOnEvent : ITransition
     public bool b_useString;
     public string eventName;
 
+    public bool b_fireEventOnChange;
+    public string onChangeEvent;
+
     private void OnDisable()
     {
         if (b_useString)
@@ -49,6 +52,10 @@ public class TOnEvent : ITransition
     {
         if (b_ready)
         {
+            if (b_fireEventOnChange)
+            {
+                EventManager.TriggerEvent(onChangeEvent);
+            }
             return true;
         }
 

@@ -7,30 +7,85 @@ using TMPro;
 
 public class TECF_EnemyEntity : TECF_BattleEntity
 {
-    public TECF_EnemyEntity() { entityType = eEntityType.ENEMY; }
+    public TECF_EnemyEntity() {
+        entityType = eEntityType.ENEMY;
+    }
 
     public eEnemySlot enemySlot;
-
+   
     Animator anim;
+    bool isDefeated = false;
+
+    public override int Hp
+    {
+        get
+        {
+            return base.Hp;
+        }
+        set
+        {
+            base.Hp = value;
+
+            // Handle enemy defeat
+            if (hp == 0 && isDefeated == false)
+            {
+                DialogManager.Instance.AddToQueue(new DialogInfo
+                {
+                    dialog = entityName + TECF_Utility.enemyDeathTxt,
+                    endDialogFunc = ()=>
+                    {
+                        currentStatus = eStatusEffect.UNCONSCIOUS;
+                        OnTameEnemy();
+                    }
+                }, true);
+
+                isDefeated = true;
+            }
+        }
+    }
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+
         EventManager.StartListening("EnemySelecting", OnEnemySelecting);
         EventManager.StartListening("EnemyUnselecting", OnEnemyUnselecting);
         EventManager.StartListening("SelectEnemy", OnSelectEnemy);
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
+
         EventManager.StopListening("EnemySelecting", OnEnemySelecting);
         EventManager.StopListening("EnemyUnselecting", OnEnemyUnselecting);
         EventManager.StopListening("SelectEnemy", OnSelectEnemy);
 
+    }
+
+    protected override void DamageHealth(int a_dmg)
+    {
+        Hp -= a_dmg;
+    }
+
+    void OnTameEnemy()
+    {
+        // Start death animation (will call destroy function)
+        anim.SetTrigger("Death");
+    }
+
+    void OnDestroyEnemy()
+    {
+        // Remove from entity array
+        BattleManager.Instance.enemyEntities.Remove(this);
+
+        // Destroy object
+        Destroy(gameObject);
     }
 
     public void CallEvent(string a_eventName)
@@ -49,6 +104,9 @@ public class TECF_EnemyEntity : TECF_BattleEntity
 
             // Update selected slot
             BattleManager.Instance.currEnemySelect = enemyInfo.enemySlot;
+
+            // Update current command target (if there is one)
+            if (BattleManager.Instance.CurrentCommand != null) BattleManager.Instance.CurrentCommand.target = this;
 
             // Ensure button is pressed
             anim.SetTrigger("Pressed");

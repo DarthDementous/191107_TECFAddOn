@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc58c348ca8e7d64789db09464b1f357, type: 3}
-  m_Name: PLAYER_TURN
+  m_Script: {fileID: 11500000, guid: e2a9a6aacce520d47bb8846c9aab713c, type: 3}
+  m_Name: GAME_OVER
   m_EditorClassIdentifier: 
   debugColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_actions: []
-  m_transitions:
-  - {fileID: 11400000, guid: 9911324d2be7b564b93c4ac1c1e26742, type: 2}
+  m_transitions: []

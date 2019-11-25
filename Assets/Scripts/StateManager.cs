@@ -19,7 +19,46 @@ public class StateManager : MonoBehaviour {
 
 	public bool isDebug = true;			  // Whether to show color of active state
 
-	void Start() {
+    private void Awake()
+    {
+        StateNode[] newStateList = new StateNode[m_states.Length];
+
+        // Go through list and make instances of everything so it doesn't use the original object
+        for (int i = 0; i < m_states.Length; ++i)
+        {
+            var currState = m_states[i];
+            var copyState = new StateNode { name = currState.name, state = Instantiate(currState.state) };
+
+            // Actions
+            for (int a = 0; a < copyState.state.m_actions.Length; ++a)
+            {
+                var currAction = copyState.state.m_actions[a];
+                currAction = Instantiate(currAction);
+
+                copyState.state.m_actions[a] = currAction;
+            }
+
+            // Transitions
+            for (int t = 0; t < copyState.state.m_transitions.Length; ++t)
+            {
+                var currTrans = copyState.state.m_transitions[t];
+                currTrans = Instantiate(currTrans);
+
+                copyState.state.m_transitions[t] = currTrans;
+            }
+
+            // Update activate state
+            if (currState.state == activeState)
+            {
+                activeState = copyState.state;
+            }
+
+            /// Replace in state list
+            m_states[i] = copyState;
+        }
+    }
+
+    void Start() {
         // Initialise actions and transitions in current active state (if it has them)
         activeState.Initialise(this);
 
@@ -41,6 +80,20 @@ public class StateManager : MonoBehaviour {
 
 
 	}
+
+    public string GetStateName(IState a_state)
+    {
+        // Look for the state
+        foreach (var node in m_states)
+        {
+            if (node.state == a_state)
+            {
+                return node.name;
+            }
+        }
+
+        return null;
+    }
 
 	public IState GetState(string a_stateName) {
 

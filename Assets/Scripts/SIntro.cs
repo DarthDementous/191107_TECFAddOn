@@ -26,12 +26,19 @@ public class SIntro : IState
             enemyTxt += " and its cohorts";
         }
 
-        EventManager.TriggerEvent("OnDisplayDialog", new DialogInfo
+        //// Add test dialog line
+        //DialogManager.Instance.DialogQueue.Enqueue(new DialogInfo { dialog = "Behold some test dialog!" });
+
+        // Add intro text dialog
+        DialogManager.Instance.AddToQueue(new DialogInfo
         {
             dialog = TECF_Utility.strIntroTxt + enemyTxt,
             endDialogFunc = () => { EventManager.TriggerEvent("EndIntro"); },
             endDialogFuncDelay = 1
         });
+
+        // Run through intro dialog
+        EventManager.TriggerEvent("RunDialog");
     }
 
     public override void Shutdown(StateManager a_controller)

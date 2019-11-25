@@ -50,7 +50,7 @@ public abstract class IState : ScriptableObject {
 			foreach (var tr in m_transitions) {
 
 				// Transition conditions met, set new active state
-				if (tr.Decide(a_controller) == true) a_controller.SetState(tr.transitionState);
+				if (tr.Decide(a_controller) == true) a_controller.SetState(a_controller.GetState(tr.transitionState));
 
 			}
 

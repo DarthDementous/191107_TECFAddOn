@@ -14,14 +14,78 @@ public class TECF_PartyEntity : TECF_BattleEntity
     [Tooltip("How high up to move the party frame when in the ready position.")]
     public float readyOffset = 50f;
 
-    private void OnEnable()
+    bool b_isFainted;
+
+    public override int Hp
     {
+        get
+        {
+            return base.Hp;
+        }
+        set
+        {
+            base.Hp = value;
+
+            // Set visual counter values to hp
+            if (hpObj)
+            {
+                var counterHP = NumToDisplay(hp);
+                var counterVals = hpObj.GetComponentsInChildren<NumberScroller>();
+
+                for (int i = 0; i < counterVals.Length; ++i)
+                {
+                    counterVals[i].SetTargetNum(counterHP[i], true);
+                }
+            }
+
+            // Handle party defeat
+            if (hp == 0 && b_isFainted == false)
+            {
+                DialogManager.Instance.AddToQueue(new DialogInfo
+                {
+                    dialog = entityName + TECF_Utility.partyDeathTxt,
+                    endDialogFunc = () =>
+                    {
+                        currentStatus = eStatusEffect.UNCONSCIOUS;
+                    }
+                }, true);
+
+                b_isFainted = true;
+            }
+        }
+    }
+
+    protected override void DamageHealth(int a_dmg)
+    {
+        base.DamageHealth(a_dmg);
+
+        StartCoroutine(TickDownHealth(a_dmg));
+    }
+
+    IEnumerator TickDownHealth(int a_dmg)
+    {
+        int targetHealth = Hp - a_dmg;
+
+        while (Hp > targetHealth)
+        {
+            Hp--;
+
+            yield return new WaitForSeconds(BattleManager.Instance.BaseDecayRate);
+        }
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
         EventManager.StartListening("OnPartyReady", OnPartyReady);
         EventManager.StartListening("PartyUnready", OnPartyUnready);
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
+
         EventManager.StopListening("OnPartyReady", OnPartyReady);
         EventManager.StopListening("PartyUnready", OnPartyUnready);
     }
@@ -30,7 +94,7 @@ public class TECF_PartyEntity : TECF_BattleEntity
     {
         PartyInfo partyInfo = a_info as PartyInfo;
 
-        if (partyInfo != null && partyInfo.partySlot == partySlot)
+        if (partyInfo != null && partyInfo.partySlot == partySlot || partyInfo.partySlot == ePartySlot.NONE)
         {
             // Reset position to default
             gameObject.transform.localPosition = Vector3.zero;
@@ -43,6 +107,19 @@ public class TECF_PartyEntity : TECF_BattleEntity
 
         if (partyInfo != null && partyInfo.partySlot == partySlot)
         {
+            //Debug.Log("ON PARTY READY FOR " + partyInfo.partySlot);
+
+            // There can only be one party ready at a time, so unready all others
+            for (int i = 0; i < BattleManager.Instance.partyMembers.Length; ++i)
+            {
+                ePartySlot currSlot = (ePartySlot)i;
+
+                if (partyInfo.partySlot != currSlot)
+                {
+                    EventManager.TriggerEvent("PartyUnready", new PartyInfo { partySlot = currSlot });
+                }
+            }
+
             // Update action panel data
             ReferenceManager.Instance.actionPanelName.text = battleProfile.entityName;
 

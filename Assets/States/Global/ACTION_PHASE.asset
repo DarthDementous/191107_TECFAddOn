@@ -9,10 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd6e4e2d885bf0e49b5276c8fba2e714, type: 3}
-  m_Name: ENEMY_SELECT
+  m_Script: {fileID: 11500000, guid: 30bff65416a47e44eb151d97c8be99bd, type: 3}
+  m_Name: ACTION_PHASE
   m_EditorClassIdentifier: 
   debugColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_actions: []
   m_transitions:
-  - {fileID: 11400000, guid: a6f783c39b9c01c418a5ea2d53494bf0, type: 2}
+  - {fileID: 11400000, guid: a1189a5aff7e1284288055eaf24d0217, type: 2}
+  - {fileID: 11400000, guid: 7bdaea2cc2b5a2045ae3db2289194c4a, type: 2}
+  - {fileID: 11400000, guid: 6cf4dcf6503ab124d95b25daee0ec22d, type: 2}

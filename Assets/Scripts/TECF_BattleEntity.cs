@@ -4,30 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public enum eEntityType
-{
-    NONE,
-    ENEMY,
-    PARTY
-}
-
-public enum eStatusEffect       // TODO: Add explanations for status effects
-{
-    NORMAL,
-    HEAL,
-    ASLEEP,
-    BLIND,
-    BURNING,
-    CONFUSED,
-    UNCONSCIOUS
-}
-
 public class TECF_BattleEntity : MonoBehaviour
 {
     public eEntityType entityType;
 
     [Tooltip("Current affliction on the entity, will affect their behaviour if it isn't NORMAL")]
     public eStatusEffect currentStatus;
+
+    public string entityName;
 
     public TextMeshProUGUI healthTxt;
     public TextMeshProUGUI powerTxt;
@@ -53,12 +37,23 @@ public class TECF_BattleEntity : MonoBehaviour
             // Set name
             if (nameTxt) nameTxt.text = battleProfile.entityName;
 
+            var enemy = this as TECF_EnemyEntity;
+            var party = this as TECF_PartyEntity;
+            if (enemy)
+            {
+                entityName = enemy.battleProfile.entityName + " " + enemy.enemySlot;
+            }
+            else
+            {
+                entityName = battleProfile.entityName;
+            }
+
             // Set sprite
             if (entityImg) entityImg.sprite = battleProfile.battleSprite;
         }
     }
 
-    public int Hp
+    public virtual int Hp
     {
         get
         {
@@ -68,17 +63,8 @@ public class TECF_BattleEntity : MonoBehaviour
         {
             hp = value;
 
-            // Set visual counter values to hp
-            if (hpObj)
-            {
-                var counterHP = NumToDisplay(hp);
-                var counterVals = hpObj.GetComponentsInChildren<NumberScroller>();
-
-                for (int i = 0; i < counterVals.Length; ++i)
-                {
-                    counterVals[i].CurrentNum = counterHP[i];
-                }
-            }
+            // Clamp hp so it doesn't go below 0
+            hp = Mathf.Max(hp, 0);
         }
     }
     public int Power
@@ -145,46 +131,60 @@ public class TECF_BattleEntity : MonoBehaviour
         return output;
     }
 
+    protected virtual void OnEnable()
+    {
+        EventManager.StartListening("TakeDamage", OnTakeDamage);
+        EventManager.StartListening("Heal", OnHeal);
+    }
+
+    protected virtual void OnDisable()
+    {
+        EventManager.StopListening("TakeDamage", OnTakeDamage);
+        EventManager.StopListening("Heal", OnHeal);
+    }
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            StartCoroutine("OnTakeDamage", 50);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            StartCoroutine("OnHeal", 15);
-        }
+        //if (Input.GetKeyDown(KeyCode.Alpha0))
+        //{
+        //    StartCoroutine("OnTakeDamage", 15);
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha9))
+        //{
+        //    StartCoroutine("OnHeal", 37);
+        //}
+    }
 
-        if (entityType == eEntityType.PARTY)
+    protected virtual void OnTakeDamage(IEventInfo a_info)
+    {
+        DamageInfo dmgInfo = a_info as DamageInfo;
+
+        // We are the target
+        if (dmgInfo != null && dmgInfo.targetEntity == this)
         {
-            Debug.Log(Hp);
+            // We or the attacker is unconscious, so ignore attack
+            if (dmgInfo.senderEntity.currentStatus == eStatusEffect.UNCONSCIOUS || 
+                dmgInfo.targetEntity.currentStatus == eStatusEffect.UNCONSCIOUS)
+            {
+                return;
+            }
+
+            DamageHealth(dmgInfo.dmg);
         }
     }
 
-    IEnumerator OnTakeDamage(int a_dmg)
+    protected virtual void DamageHealth(int a_dmg) { }
+
+
+    void OnHeal(IEventInfo a_info)
     {
-        // TODO: Hook up to incoming damage
+        //int targetHealth = Hp + a_healAmount;
 
-        int targetHealth = Hp - a_dmg;
+        //while (Hp < targetHealth)
+        //{
+        //    Hp++;
 
-        while (Hp > targetHealth)
-        {
-            Hp--;
-
-            yield return new WaitForSeconds(BattleManager.Instance.BaseDecayRate);
-        }
-    }
-
-    IEnumerator OnHeal(int a_healAmount)
-    {
-        int targetHealth = Hp + a_healAmount;
-
-        while (Hp < targetHealth)
-        {
-            Hp++;
-
-            yield return new WaitForSeconds(BattleManager.Instance.BaseDecayRate);
-        }
+        //    yield return new WaitForSeconds(BattleManager.Instance.BaseDecayRate);
+        //}
     }
 }

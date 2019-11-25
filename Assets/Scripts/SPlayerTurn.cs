@@ -10,8 +10,8 @@ public class SPlayerTurn : IState
         // Show player turn GUI
         ReferenceManager.Instance.actionPanel.SetActive(true);
 
-        // Decide which party member goes first
-        EventManager.TriggerEvent("NextPartyMember");
+        //// Decide which party member goes first
+        //EventManager.TriggerEvent("NextPartyMember");
     }
 
     public override void Shutdown(StateManager a_controller)

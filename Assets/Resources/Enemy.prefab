@@ -91,10 +91,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entityType: 0
   currentStatus: 0
+  entityName: 
   healthTxt: {fileID: 0}
   powerTxt: {fileID: 0}
   nameTxt: {fileID: 0}
   entityImg: {fileID: 7072766671656112339}
+  hpObj: {fileID: 0}
+  ppObj: {fileID: 0}
   enemySlot: 0
 --- !u!95 &7459673875806317240
 Animator:

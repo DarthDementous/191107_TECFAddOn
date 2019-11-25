@@ -21,6 +21,8 @@ public class ReferenceManager : MonoBehaviour
     public GameObject actionPanel;
     public GameObject enemyPanel;
     public GameObject enemySelectPanel;
+    public GameObject winPanel;
+    public GameObject gameOverPanel;
 
     public Text actionPanelName;
     public TextMeshProUGUI enemySelectPanelText;

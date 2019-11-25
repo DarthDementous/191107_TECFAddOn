@@ -21,5 +21,5 @@ MonoBehaviour:
   guts: 10
   luck: 3
   speed: 13
-  offense: 50
+  offense: 100
   defense: 67

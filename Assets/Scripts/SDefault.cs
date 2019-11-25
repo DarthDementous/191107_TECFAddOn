@@ -6,5 +6,5 @@ using UnityEngine.AI;
 [CreateAssetMenu(menuName = "FSM/States/Default")]
 public class SDefault : IState
 {
-
+    
 }

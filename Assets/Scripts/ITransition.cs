@@ -7,7 +7,7 @@ using UnityEngine;
  * */
 public abstract class ITransition : ScriptableObject {
 
-	public IState transitionState;
+	public string transitionState;
 
     // Optional logic to be run upon entering the state to be transitioned from
     public virtual void Initialise(StateManager a_controller) { }
