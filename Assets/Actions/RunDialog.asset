@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9881ff2591753a84fa653660adb56675, type: 3}
-  m_Name: PlayerTurnGUI
+  m_Script: {fileID: 11500000, guid: e4ed8e13128cc5649bc3ac8e4b895443, type: 3}
+  m_Name: RunDialog
   m_EditorClassIdentifier: 

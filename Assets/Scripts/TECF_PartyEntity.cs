@@ -43,7 +43,8 @@ public class TECF_PartyEntity : TECF_BattleEntity
             {
                 DialogManager.Instance.AddToQueue(new DialogInfo
                 {
-                    dialog = entityName + TECF_Utility.partyDeathTxt,
+                    dialogType = TECF.eDialogType.FAINTED,
+                    senderEntity = this,
                     endDialogFunc = () =>
                     {
                         currentStatus = eStatusEffect.UNCONSCIOUS;

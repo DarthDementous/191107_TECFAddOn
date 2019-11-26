@@ -41,6 +41,7 @@ public class BattleManager : MonoBehaviour
         EventManager.StartListening("RegisterAttack", OnRegisterAttack);
         EventManager.StartListening("RunThroughCommands", OnRunThroughCommands);
         EventManager.StartListening("PartyUnconscious", OnPartyUnconscious);
+        EventManager.StartListening("TameEnemy", OnTameEnemy);
     }
 
     private void OnDisable()
@@ -50,6 +51,19 @@ public class BattleManager : MonoBehaviour
         EventManager.StopListening("RegisterAttack", OnRegisterAttack);
         EventManager.StopListening("RunThroughCommands", OnRunThroughCommands);
         EventManager.StopListening("PartyUnconscious", OnPartyUnconscious);
+        EventManager.StopListening("TameEnemy", OnTameEnemy);
+    }
+
+    void OnTameEnemy(IEventInfo a_info)
+    {
+        // Enemy was the last, freeze hp countdown on party members
+        if (enemyEntities.Count == 1)
+        {
+            foreach (var party in partyEntities)
+            {
+                party.StopAllCoroutines();
+            }
+        }
     }
 
     void OnPartyUnconscious(IEventInfo a_info)
@@ -58,6 +72,12 @@ public class BattleManager : MonoBehaviour
 
         if (partyInfo != null)
         {
+            // Go to next party member if was in active slot
+            if (partyInfo.partySlot == currPartySlot)
+            {
+                EventManager.TriggerEvent("NextPartyMember");
+            }
+
             // Party member has fainted, tint the whole screen and activate death highlights
             var actionUI = ReferenceManager.Instance.actionPanel.GetComponentsInChildren<Image>();
 
@@ -92,13 +112,13 @@ public class BattleManager : MonoBehaviour
     /**
      * @brief Run through all enemies and decide what actions to take. (Should only be called after the player has made their turn)
      * */
-    void DecideEnemyTurns()
+    public void DecideEnemyTurns()
     {
-        for (int i = 0; i < enemies.Length; ++i)
+        for (int i = 0; i < enemyEntities.Count; ++i)
         {
             // Randomly pick a party member to attack
             TECF_PartyEntity targetPlayer = GetPartyEntityBySlot((ePartySlot)Random.Range(0, partyMembers.Length));
-            TECF_EnemyEntity senderEnemy = ReferenceManager.Instance.enemyPanel.GetComponentsInChildren<TECF_EnemyEntity>()[i];
+            TECF_EnemyEntity senderEnemy = enemyEntities[i];
 
             _commandList.Add(new TECF.EntityCommand
             {
@@ -111,8 +131,6 @@ public class BattleManager : MonoBehaviour
 
     TECF_PartyEntity GetPartyEntityBySlot(ePartySlot a_slot)
     {
-        var partyEntities = ReferenceManager.Instance.partyPanel.GetComponentsInChildren<TECF_PartyEntity>();
-
         foreach (var pe in partyEntities)
         {
             if (pe.partySlot == a_slot)
@@ -166,33 +184,6 @@ public class BattleManager : MonoBehaviour
         return dmg;
     }
 
-    /**
-     * @brief Checks whether command is still valid, for example an attack command where either the sender or the target is unconscious.
-     * @param a_cmd is the command to validate
-     * @return true if a valid command, false if not
-     * */
-    bool IsValidCommand(TECF.EntityCommand a_cmd)
-    {
-        // Null check
-        if (a_cmd.target == null || a_cmd.sender == null)
-        {
-            return false;
-        }
-
-
-        /// Attack validation
-        if (a_cmd.cmdType == TECF.eCommandType.ATTACK)
-        {
-            // Unconscious check
-            if (a_cmd.target.currentStatus == eStatusEffect.UNCONSCIOUS || a_cmd.sender.currentStatus == eStatusEffect.UNCONSCIOUS)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     void OnRunThroughCommands(IEventInfo a_info)
     {
         //Debug.Log("RUN THROUGH COMMANDS");
@@ -207,12 +198,7 @@ public class BattleManager : MonoBehaviour
             switch (cmd.cmdType)
             {
                 case TECF.eCommandType.ATTACK:
-                    /// Skip command if invalid
-                    if (!IsValidCommand(cmd))
-                    {
-                        break;
-                    }
-
+                    /// Get ready function
                     // Ready party member if party is attacking
                     TECF_PartyEntity party      = cmd.sender as TECF_PartyEntity;
                     UnityAction partyReadyFunc  = null;
@@ -233,10 +219,12 @@ public class BattleManager : MonoBehaviour
                         };
                     }
 
-                    // Attacking dialog
+                    /// Attacking dialog
                     DialogManager.Instance.AddToQueue(new DialogInfo
                     {
-                        dialog = cmd.sender.entityName + TECF_Utility.attackTxt,
+                        dialogType = TECF.eDialogType.ATTACKING,
+                        senderEntity = cmd.sender,
+                        targetEntity = cmd.target,
                         endDialogFuncDelay = ActionLineSwitchRate,
                         startDialogFunc = partyReadyFunc
                     });
@@ -249,7 +237,9 @@ public class BattleManager : MonoBehaviour
                     {
                         DialogManager.Instance.AddToQueue(new DialogInfo
                         {
-                            dialog = TECF_Utility.missTxt,
+                            dialogType = TECF.eDialogType.MISS,
+                            senderEntity = cmd.sender,
+                            targetEntity = cmd.target,
                             endDialogFuncDelay = ActionLineSwitchRate                    
                         });
 
@@ -265,7 +255,9 @@ public class BattleManager : MonoBehaviour
                     {
                         DialogManager.Instance.AddToQueue(new DialogInfo
                         {
-                            dialog = cmd.target.entityName + TECF_Utility.dodgeTxt,
+                            dialogType = TECF.eDialogType.DODGED,
+                            senderEntity = cmd.sender,
+                            targetEntity = cmd.target,
                             endDialogFuncDelay = ActionLineSwitchRate
                         });
 
@@ -286,7 +278,9 @@ public class BattleManager : MonoBehaviour
                     {
                         DialogManager.Instance.AddToQueue(new DialogInfo
                         {
-                            dialog = TECF_Utility.critTxt
+                            dialogType = TECF.eDialogType.CRITICAL_HIT,
+                            senderEntity = cmd.sender,
+                            targetEntity = cmd.target
                         });
 
                         attackDmg *= 4;
@@ -295,7 +289,10 @@ public class BattleManager : MonoBehaviour
                     /// 5. Send damage to the target after dialog finishes
                     DialogManager.Instance.AddToQueue(new DialogInfo
                     {
-                        dialog = attackDmg + TECF_Utility.dmgTxt + cmd.target.entityName,
+                        strData = attackDmg.ToString(),
+                        dialogType = TECF.eDialogType.DAMAGED,
+                        senderEntity = cmd.sender,
+                        targetEntity = cmd.target,
                         startDialogFunc = ()=>
                         {
                             EventManager.TriggerEvent("TakeDamage", new DamageInfo
@@ -380,9 +377,6 @@ public class BattleManager : MonoBehaviour
         // Next slot is outside bounds, assume player turn is over
         currPartySlot = ePartySlot.NONE;
 
-        // Identify enemy actions for this turn
-        DecideEnemyTurns();
-
         EventManager.TriggerEvent("EndPlayerTurn");
     }
 
@@ -453,6 +447,9 @@ public class BattleManager : MonoBehaviour
             // Set to relevant slot
             eEe.enemySlot = (eEnemySlot)i;
 
+            // Set type
+            eEe.entityType = eEntityType.ENEMY;
+
             // Assign battle profile
             eEe.BattleProfile = enemies[i];
 
@@ -470,6 +467,9 @@ public class BattleManager : MonoBehaviour
 
             // Assign battle profile
             pmPe.BattleProfile = partyMembers[i];
+
+            // Set type
+            pmPe.entityType = eEntityType.PARTY;
 
             // Set to relevant slot
             pmPe.partySlot = (ePartySlot)i;

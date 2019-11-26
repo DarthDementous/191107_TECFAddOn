@@ -10,7 +10,8 @@ public class TOnWin : ITransition
 {
     public override bool Decide(StateManager a_controller)
     {
-        if (BattleManager.Instance.enemyEntities.Count == 0)
+        // No more enemies or dialogue left
+        if (BattleManager.Instance.enemyEntities.Count == 0 && DialogManager.Instance.IsWriting == false)
         {
             return true;
         }

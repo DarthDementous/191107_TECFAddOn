@@ -31,9 +31,14 @@ public class TECF_EnemyEntity : TECF_BattleEntity
             {
                 DialogManager.Instance.AddToQueue(new DialogInfo
                 {
-                    dialog = entityName + TECF_Utility.enemyDeathTxt,
-                    endDialogFunc = ()=>
+                    dialogType = TECF.eDialogType.FAINTED,
+                    senderEntity = this,
+                    endDialogFuncDelay = BattleManager.Instance.ActionLineSwitchRate,
+                    startDialogFunc = ()=>
                     {
+                        // Let the battle manager know an enemy has been tamed
+                        EventManager.TriggerEvent("TameEnemy");
+
                         currentStatus = eStatusEffect.UNCONSCIOUS;
                         OnTameEnemy();
                     }
@@ -70,6 +75,9 @@ public class TECF_EnemyEntity : TECF_BattleEntity
 
     protected override void DamageHealth(int a_dmg)
     {
+        // Play hit animation
+        anim.SetTrigger("Hit");
+
         Hp -= a_dmg;
     }
 

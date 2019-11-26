@@ -16,10 +16,10 @@ MonoBehaviour:
   battleSprite: {fileID: 0}
   battleBG: {fileID: 0}
   battleSFX: []
-  hp: 75
+  hp: 250
   power: 40
   guts: 10
   luck: 3
   speed: 13
-  offense: 100
+  offense: 37
   defense: 67

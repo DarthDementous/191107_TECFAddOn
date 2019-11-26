@@ -8,7 +8,7 @@ public class SIntro : IState
     public override void Initialise(StateManager a_controller)
     {
         // Activate dialog panel
-        ReferenceManager.Instance.dialogPanel.SetActive(true);
+        //ReferenceManager.Instance.dialogPanel.SetActive(true);
 
         // Display intro text
         string enemyTxt = "";
@@ -32,7 +32,8 @@ public class SIntro : IState
         // Add intro text dialog
         DialogManager.Instance.AddToQueue(new DialogInfo
         {
-            dialog = TECF_Utility.strIntroTxt + enemyTxt,
+            dialogType = TECF.eDialogType.INTRO,
+            strData = enemyTxt,
             endDialogFunc = () => { EventManager.TriggerEvent("EndIntro"); },
             endDialogFuncDelay = 1
         });
@@ -44,6 +45,6 @@ public class SIntro : IState
     public override void Shutdown(StateManager a_controller)
     {
         // Hide dialog panel
-        ReferenceManager.Instance.dialogPanel.SetActive(false);
+        //ReferenceManager.Instance.dialogPanel.SetActive(false);
     }
 }

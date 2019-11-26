@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: PLAYER_TURN
   m_EditorClassIdentifier: 
   debugColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  m_actions: []
+  m_actions:
+  - {fileID: 11400000, guid: 0947ea2efeac76744adce2b066f83154, type: 2}
   m_transitions:
   - {fileID: 11400000, guid: a1189a5aff7e1284288055eaf24d0217, type: 2}
   - {fileID: 11400000, guid: 7bdaea2cc2b5a2045ae3db2289194c4a, type: 2}
   - {fileID: 11400000, guid: 9911324d2be7b564b93c4ac1c1e26742, type: 2}
+  - {fileID: 11400000, guid: 6eae7501b4de894428de4ca2cc35ac45, type: 2}

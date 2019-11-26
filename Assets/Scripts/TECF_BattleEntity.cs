@@ -168,7 +168,7 @@ public class TECF_BattleEntity : MonoBehaviour
             {
                 return;
             }
-
+            
             DamageHealth(dmgInfo.dmg);
         }
     }

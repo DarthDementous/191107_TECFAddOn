@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
+using System.Linq;
 
 public class DialogManager : MonoBehaviour
 {
@@ -18,7 +19,27 @@ public class DialogManager : MonoBehaviour
     [Tooltip("How long to wait (in seconds) before going to next line of dialog. Can be overridden by individual dialog lines.")]
     public float lineDelay = 1f;
 
+    public bool IsWriting   // Whether or not dialog is in the process of being written
+    {
+        get
+        {
+            return _isWriting;
+        }
+        set
+        {
+            _isWriting = value;
+
+            // Update dialog visuals
+            ref_visuals.SetActive(_isWriting);
+
+            // Update action panel visibility
+            ReferenceManager.Instance.actionPanel.SetActive(!_isWriting);
+        }
+    }
+    bool _isWriting;
+
     public TextMeshProUGUI ref_dialogTxt;
+    public GameObject ref_visuals;
 
     private void Awake()
     {
@@ -44,9 +65,27 @@ public class DialogManager : MonoBehaviour
         EventManager.StopListening("RunDialog", CallRunDialog);
     }
 
+    public void PollForFaint()
+    {
+        // Check if there are any faint messages in the queue and run them early (if not running already)
+        if (IsWriting == false)
+        {
+            foreach (var d in DialogQueue)
+            {
+                if (d.dialogType == TECF.eDialogType.FAINTED && d.senderEntity.entityType == eEntityType.PARTY)
+                {
+                    StartCoroutine(RunThroughDialog());
+                    break;
+                }
+            }
+        }
+    }
+
     void CallRunDialog(IEventInfo a_info)
     {
         DialogRunInfo dialogRunInfo = a_info as DialogRunInfo;
+
+        StopAllCoroutines();
 
         if (dialogRunInfo != null)
         {
@@ -65,9 +104,52 @@ public class DialogManager : MonoBehaviour
      * */
     public void AddToQueue(DialogInfo a_dialogInfo, bool a_isPriority = false)
     {
-        a_dialogInfo.queueTime = (a_isPriority) ? 0 : Time.time;
+        // Set queue position
 
-        DialogQueue.Add(a_dialogInfo);
+        // Figure out final dialog string from type (if given)
+        switch (a_dialogInfo.dialogType)
+        {
+            case TECF.eDialogType.INTRO:
+                a_dialogInfo.SetDialog(TECF_Utility.strIntroTxt + a_dialogInfo.strData);
+                break;
+            case TECF.eDialogType.ATTACKING:
+                a_dialogInfo.SetDialog(a_dialogInfo.senderEntity.entityName + TECF_Utility.attackTxt);
+                break;
+            case TECF.eDialogType.CRITICAL_HIT:
+                a_dialogInfo.SetDialog(TECF_Utility.critTxt);
+                break;
+            case TECF.eDialogType.FAINTED:
+                string faintTxt = (a_dialogInfo.senderEntity.entityType == eEntityType.ENEMY) ? TECF_Utility.enemyDeathTxt : TECF_Utility.partyDeathTxt;
+
+                a_dialogInfo.SetDialog(a_dialogInfo.senderEntity.entityName + faintTxt);
+                break;
+            case TECF.eDialogType.MISS:
+                a_dialogInfo.SetDialog(TECF_Utility.missTxt);
+                break;
+            case TECF.eDialogType.DODGED:
+                a_dialogInfo.SetDialog(a_dialogInfo.targetEntity.entityName + TECF_Utility.dodgeTxt);
+                break;
+            case TECF.eDialogType.DAMAGED:
+                a_dialogInfo.SetDialog(a_dialogInfo.strData + TECF_Utility.dmgTxt + a_dialogInfo.targetEntity.entityName);
+                break;
+            default:
+                a_dialogInfo.SetDialog(a_dialogInfo.strData);
+                break;
+        }
+
+        // Not priority, add to end of queue
+        if (a_isPriority == false)
+        {
+            DialogQueue.Add(a_dialogInfo);
+        }
+        // Is priority, add to start of queue
+        else
+        {
+            DialogQueue.Insert(0, a_dialogInfo);
+        }
+
+        // Set position in the queue
+        //a_dialogInfo.queuePos = (a_isPriority) ? -1 : DialogQueue.Count - 1;
     }
 
     /**
@@ -76,20 +158,28 @@ public class DialogManager : MonoBehaviour
      * */
     IEnumerator RunThroughDialog(UnityAction a_funcOnComplete = null)
     {
+        IsWriting = true;
+
         while (DialogQueue.Count != 0)
         {
-            // Queue could've changed so make sure we sort it so most recent items are first (smallest time to biggest time)
-            DialogQueue.Sort((a, b) => a.queueTime.CompareTo(b.queueTime));
+            // Sort so most recent items are first (smallest pos to biggest pos)
+            //DialogQueue.OrderBy(d => d.queuePos);
 
             // Get dialog line info
             DialogInfo dialogInfo = DialogQueue[0]; DialogQueue.RemoveAt(0);
+
+            // Validate that dialog is still valid or else skip
+            if (!IsDialogValid(dialogInfo))
+            {
+                break;
+            }
 
             // Optional start callback
             dialogInfo.startDialogFunc?.Invoke();
 
             // Gradually display text
             ref_dialogTxt.text = "";
-            foreach (char letter in dialogInfo.dialog.ToCharArray())
+            foreach (char letter in dialogInfo.GetDialog().ToCharArray())
             {
                 yield return new WaitForSeconds(charDelay);
                 ref_dialogTxt.text += letter;
@@ -104,48 +194,29 @@ public class DialogManager : MonoBehaviour
 
         // Optional dialog end callback
         a_funcOnComplete?.Invoke();
+
+        IsWriting = false;
     }
 
-    //// Start is called before the first frame update
-    //void Start()
-    //{
-    //    //StartCoroutine(DisplayDialog(dialog, () => { EventManager.TriggerEvent("EndIntro"); }, 1));
-    //}
+    bool IsDialogValid(DialogInfo a_dialog)
+    {
+        // Check if dialog type is combat
+        if (a_dialog.dialogType > TECF.eDialogType.COMBAT && a_dialog.dialogType < TECF.eDialogType.COMBAT_END)
+        {
+            // Null check
+            if (a_dialog.senderEntity == null || a_dialog.targetEntity == null)
+            {
+                return false;
+            }
 
-    //void Dialog(IEventInfo a_info)
-    //{
-    //    DialogInfo dialogInfo = a_info as DialogInfo;
+            // Unconscious check
+            if (a_dialog.senderEntity.currentStatus == eStatusEffect.UNCONSCIOUS || 
+                a_dialog.targetEntity.currentStatus == eStatusEffect.UNCONSCIOUS)
+            {
+                return false;
+            }
+        }
 
-    //    if (dialogInfo != null)
-    //    {
-    //        StartCoroutine(DisplayDialog(dialogInfo.dialog, dialogInfo.endDialogFunc, dialogInfo.endDialogFuncDelay));
-    //    }
-    //}
-
-    ///**
-    // * @brief Type out dialog into text box according to interval with optional callback once finished.
-    // * @param a_dialog is the string to type out.
-    // * @param a_callback is the function to call once the string is finished being typed out.
-    // * @param a_optDelayS is the optional time in seconds to wait before initiating the callback.
-    // * @return IEnumerator
-    // * */
-    //IEnumerator DisplayDialog(string a_dialog, UnityAction a_callback = null, float a_optDelayS = 0)
-    //{
-    //    ref_dialogTxt.text = "";
-    //    foreach (char letter in a_dialog.ToCharArray())
-    //    {
-    //        yield return new WaitForSeconds(charDelay);
-    //        ref_dialogTxt.text += letter;
-    //    }
-
-    //    yield return new WaitForSeconds(a_optDelayS);
-
-    //    // Activate callback if not null
-    //    a_callback?.Invoke();
-
-    //    // Display next dialog line
-
-    //    // TODO: Make it so the end intro event only gets called for the intro dialog
-    //    //EventManager.TriggerEvent("EndIntro");
-    //}
+        return true;
+    }
 }

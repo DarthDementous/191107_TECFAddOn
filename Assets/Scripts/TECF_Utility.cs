@@ -13,6 +13,22 @@ namespace TECF
         ATTACK
     }
 
+    public enum eDialogType
+    {
+        NONE = 0,
+        GLOBAL = 100,
+        INTRO,
+        FAINTED,
+        GLOBAL_END,
+        COMBAT = 200,
+        ATTACKING,
+        DAMAGED,
+        CRITICAL_HIT,
+        MISS,
+        DODGED,
+        COMBAT_END
+    }
+
     public class EntityCommand
     {
         public eCommandType        cmdType;
@@ -24,11 +40,25 @@ namespace TECF
 
 public class DialogInfo : IEventInfo
 {
-    public string dialog;
+    public void SetDialog(string a_dialog)
+    {
+        dialog = a_dialog;
+    }
+    public string GetDialog()
+    {
+        return dialog;
+    }
+
+    public TECF.eDialogType dialogType;
+    public TECF_BattleEntity senderEntity;
+    public TECF_BattleEntity targetEntity;
+    public string strData;
     public UnityAction startDialogFunc;
     public UnityAction endDialogFunc;
     public float endDialogFuncDelay;
-    public float queueTime;
+    public int queuePos;
+
+    string dialog;
 }
 
 public class DialogRunInfo : IEventInfo
