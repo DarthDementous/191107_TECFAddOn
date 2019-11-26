@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TECF;
 
 [CreateAssetMenu(menuName = "FSM/States/EnemySelect")]
 public class SEnemySelect : IState
@@ -20,8 +21,14 @@ public class SEnemySelect : IState
             b.interactable = false;
         }
 
+        // Activate enemy selections
+        foreach (var e in BattleManager.Instance.EnemyEntities)
+        {
+            e.anim.SetBool("Selecting", true);
+        }
+
         // Select first enemy by default
-        EventManager.TriggerEvent("SelectEnemy", new EnemyInfo { enemySlot = eEnemySlot.A });
+        EventManager.TriggerEvent("SelectEnemy", new EnemyInfo { enemy = BattleManager.Instance.EnemyEntities[0] });
     }
 
     public override void Shutdown(StateManager a_controller)
@@ -37,7 +44,10 @@ public class SEnemySelect : IState
             b.interactable = true;
         }
 
-        // Deactivate selecting state on enemies
-        EventManager.TriggerEvent("EnemyUnselecting");
+        // Deactivate enemy selections
+        foreach (var e in BattleManager.Instance.EnemyEntities)
+        {
+            e.anim.SetBool("Selecting", false);
+        }
     }
 }

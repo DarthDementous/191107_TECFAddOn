@@ -27,15 +27,15 @@ public class AudioSystem : MonoBehaviour {
         public float        o_pitch;
     }
 
-	public List<AudioNode> audioFiles = new List<AudioNode>();
+	public List<AudioNode> AudioFiles = new List<AudioNode>();
 
-	AudioSource targetSource;			// Which audio source to play the clips from
+	AudioSource _targetSource;			// Which audio source to play the clips from
 
 	private void Awake() {
 		// Set the target audio source to the first found one in the children of the entity wrapper object
-		targetSource = GetComponentInChildren<AudioSource>();
+		_targetSource = GetComponentInChildren<AudioSource>();
 
-		Debug.Assert(targetSource, "Object with attached AudioSystem does not have any AudioSources");
+		Debug.Assert(_targetSource, "Object with attached AudioSystem does not have any AudioSources");
 	}
 
     public PlayInfo InterpretPlayString(string a_str, bool b_randClip = false) {
@@ -57,14 +57,14 @@ public class AudioSystem : MonoBehaviour {
         // Determine audio clip
         if (b_randClip) {
             // Find and hold onto all audio clips containing the given alias
-            List<AudioNode> randClips = audioFiles.FindAll(clip => clip.alias.Contains(playInfo.alias));
+            List<AudioNode> randClips = AudioFiles.FindAll(clip => clip.alias.Contains(playInfo.alias));
 
             // Get random index and use it to play a random clip sound with the alias from list
             playInfo.o_clip = randClips[Random.Range(0, randClips.Count())].audio;
         }
         else {
 
-            playInfo.o_clip = (audioFiles.Find(node => node.alias == playInfo.alias)).audio;
+            playInfo.o_clip = (AudioFiles.Find(node => node.alias == playInfo.alias)).audio;
             Debug.Assert(playInfo.o_clip, "Attempted to play sound with alias not found in audio files of the AudioSystem: " + playInfo.alias);
         }
 
@@ -80,8 +80,8 @@ public class AudioSystem : MonoBehaviour {
 
         PlayInfo playInfo = InterpretPlayString(a_audioString);
 
-        targetSource.pitch = playInfo.o_pitch;
-		targetSource.PlayOneShot(playInfo.o_clip, playInfo.volume);
+        _targetSource.pitch = playInfo.o_pitch;
+		_targetSource.PlayOneShot(playInfo.o_clip, playInfo.volume);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class AudioSystem : MonoBehaviour {
         AudioSource source = a_altAudioSource;
 
         // No alternate audio source provided, use set target
-        if (!source) { source = targetSource; }
+        if (!source) { source = _targetSource; }
 
         // Set audio source clip info
         source.pitch    = playInfo.o_pitch;
@@ -117,11 +117,11 @@ public class AudioSystem : MonoBehaviour {
         if (a_bPreload)
         {
             PlayInfo playInfo = InterpretPlayString(a_audioString);
-            targetSource.clip = playInfo.o_clip;
-            targetSource.pitch = playInfo.o_pitch;
-            targetSource.volume = playInfo.volume;
+            _targetSource.clip = playInfo.o_clip;
+            _targetSource.pitch = playInfo.o_pitch;
+            _targetSource.volume = playInfo.volume;
 
-            targetSource.PlayDelayed(a_delayS);
+            _targetSource.PlayDelayed(a_delayS);
         }
 
         else
@@ -139,13 +139,13 @@ public class AudioSystem : MonoBehaviour {
 	public void PlayRandClip(string a_audioString) {
         PlayInfo playInfo = InterpretPlayString(a_audioString, true);
 
-        targetSource.pitch = playInfo.o_pitch;
-        targetSource.PlayOneShot(playInfo.o_clip, playInfo.volume);
+        _targetSource.pitch = playInfo.o_pitch;
+        _targetSource.PlayOneShot(playInfo.o_clip, playInfo.volume);
     }
 
     public AudioClip HasClip(string a_alias)
     {
-        foreach (var file in audioFiles)
+        foreach (var file in AudioFiles)
         {
             if (file.alias == a_alias)
             {
@@ -157,10 +157,10 @@ public class AudioSystem : MonoBehaviour {
     }
 
     public void StopCurrentClip() {
-	    targetSource.Stop();
+	    _targetSource.Stop();
 	}
 
     public void SetLooping(bool b_loop) {
-        targetSource.loop = b_loop;
+        _targetSource.loop = b_loop;
     }
 }

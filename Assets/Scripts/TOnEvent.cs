@@ -21,7 +21,6 @@ public class TOnEvent : ITransition
     {
         if (b_useString)
         {
-
             EventManager.StopListening(eventName, SetReady);
         }
     }
@@ -29,6 +28,8 @@ public class TOnEvent : ITransition
     public void SetReady(IEventInfo a_info)
     {
         b_ready = true;
+
+        //Debug.Log("TRANSITION EVENT TRIGGERED FOR " + this);
     }
 
     // Called by Unity event
@@ -43,8 +44,17 @@ public class TOnEvent : ITransition
 
         if (b_useString)
         {
-
             EventManager.StartListening(eventName, SetReady);
+        }
+    }
+
+    public override void Shutdown(StateManager a_controller)
+    {
+        base.Shutdown(a_controller);
+
+        if (b_useString)
+        {
+            EventManager.StopListening(eventName, SetReady);
         }
     }
 

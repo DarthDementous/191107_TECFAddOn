@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7072766671656112339}
   - component: {fileID: 6212945408412243558}
   - component: {fileID: 7459673875806317240}
-  - component: {fileID: 179740354390058460}
+  - component: {fileID: 9142262620560651654}
   m_Layer: 5
   m_Name: Enemy
   m_TagString: Untagged
@@ -99,6 +99,7 @@ MonoBehaviour:
   hpObj: {fileID: 0}
   ppObj: {fileID: 0}
   enemySlot: 0
+  anim: {fileID: 0}
 --- !u!95 &7459673875806317240
 Animator:
   serializedVersion: 3
@@ -118,7 +119,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &179740354390058460
+--- !u!114 &9142262620560651654
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -136,13 +137,13 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 3
+  m_Transition: 0
   m_Colors:
-    m_NormalColor: {r: 0.35, g: 0.35, b: 0.35, a: 1}
-    m_HighlightedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.35, g: 0.35, b: 0.35, a: 1}
-    m_DisabledColor: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -152,7 +153,7 @@ MonoBehaviour:
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlight
+    m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled

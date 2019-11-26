@@ -20,10 +20,10 @@ MonoBehaviour:
     audio: {fileID: 8300000, guid: 33fd6f164464eb043b84ba04311c5e63, type: 3}
   - alias: INTRO
     audio: {fileID: 8300000, guid: fe9c3dcfb99f0894fa656bdf4e583956, type: 3}
-  hp: 100
+  hp: 250
   power: 20
   guts: 12
   luck: 12
   speed: 31
-  offense: 400
+  offense: 200
   defense: 40

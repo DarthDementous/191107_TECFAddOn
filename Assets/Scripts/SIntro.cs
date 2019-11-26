@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TECF;
 
 [CreateAssetMenu(menuName = "FSM/States/Intro")]
 public class SIntro : IState
@@ -13,15 +14,15 @@ public class SIntro : IState
         // Display intro text
         string enemyTxt = "";
 
-        if (BattleManager.Instance.enemies.Length != 0)     // At least one enemy
+        if (BattleManager.Instance.Enemies.Length != 0)     // At least one enemy
         {
-            enemyTxt += BattleManager.Instance.enemies[0].entityName;
+            enemyTxt += BattleManager.Instance.Enemies[0].entityName;
         }
-        if (BattleManager.Instance.enemies.Length > 1 && BattleManager.Instance.enemies.Length < 3) // Two enemies
+        if (BattleManager.Instance.Enemies.Length > 1 && BattleManager.Instance.Enemies.Length < 3) // Two enemies
         {
             enemyTxt += " and its cohort";
         }
-        else if (BattleManager.Instance.enemies.Length > 2) // More than two enemies
+        else if (BattleManager.Instance.Enemies.Length > 2) // More than two enemies
         {
             enemyTxt += " and its cohorts";
         }

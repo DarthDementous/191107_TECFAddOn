@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using TECF;
 
 [CreateAssetMenu(menuName = "FSM/States/GameOver")]
 public class SGameOver : IState

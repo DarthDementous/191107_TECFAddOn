@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TECF;
 
 [CreateAssetMenu(menuName = "FSM/States/ActionPhase")]
 public class SActionPhase : IState
