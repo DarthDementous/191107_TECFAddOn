@@ -147,9 +147,6 @@ namespace TECF
             {
                 DialogQueue.Insert(0, a_dialogInfo);
             }
-
-            // Set position in the queue
-            //a_dialogInfo.queuePos = (a_isPriority) ? -1 : DialogQueue.Count - 1;
         }
 
         /**
@@ -160,13 +157,8 @@ namespace TECF
         {
             IsWriting = true;
 
-            Debug.Log("RUN THROUGH DIALOG");
-
             while (DialogQueue.Count != 0)
             {
-                // Sort so most recent items are first (smallest pos to biggest pos)
-                //DialogQueue.OrderBy(d => d.queuePos);
-
                 // Get dialog line info
                 DialogInfo dialogInfo = DialogQueue[0]; DialogQueue.RemoveAt(0);
 

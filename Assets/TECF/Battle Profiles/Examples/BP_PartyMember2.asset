@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d5b3dc90b86f7340b0119f2657c9ed4, type: 3}
   m_Name: BP_PartyMember2
   m_EditorClassIdentifier: 
-  entityName: Fortran
-  battleSprite: {fileID: 0}
-  battleBG: {fileID: 0}
-  battleSFX: []
-  hp: 120
-  power: 0
-  guts: 20
-  luck: 6
-  speed: 10
-  offense: 150
-  defense: 100
+  EntityName: Gerald
+  EntityScale: 1
+  BattleSprite: {fileID: 0}
+  BattleBackground: {fileID: 0}
+  BattleSFX: []
+  Hp: 300
+  Power: 0
+  Offense: 40
+  Defense: 80
+  Speed: 20
+  Guts: 15

@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d5b3dc90b86f7340b0119f2657c9ed4, type: 3}
   m_Name: BP_LasciviousHound
   m_EditorClassIdentifier: 
-  entityName: Lascivious Hound
-  battleSprite: {fileID: 21300000, guid: c42ee87a5fc582145bf2f77dbf00870e, type: 3}
-  battleBG: {fileID: 21300000, guid: 70945476cb9f44d41aba7adadadaeb23, type: 3}
-  battleSFX:
-  - alias: LOOP
-    audio: {fileID: 8300000, guid: 33fd6f164464eb043b84ba04311c5e63, type: 3}
+  EntityName: Lascivious Hound
+  EntityScale: 1
+  BattleSprite: {fileID: 21300000, guid: c42ee87a5fc582145bf2f77dbf00870e, type: 3}
+  BattleBackground: {fileID: 21300000, guid: 70945476cb9f44d41aba7adadadaeb23, type: 3}
+  BattleSFX:
   - alias: INTRO
     audio: {fileID: 8300000, guid: fe9c3dcfb99f0894fa656bdf4e583956, type: 3}
-  hp: 250
-  power: 20
-  guts: 12
-  luck: 12
-  speed: 31
-  offense: 200
-  defense: 40
+  - alias: LOOP
+    audio: {fileID: 8300000, guid: 33fd6f164464eb043b84ba04311c5e63, type: 3}
+  Hp: 247
+  Power: 0
+  Offense: 57
+  Defense: 67
+  Speed: 33
+  Guts: 2

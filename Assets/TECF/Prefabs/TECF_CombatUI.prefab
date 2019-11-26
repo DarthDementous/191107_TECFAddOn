@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abdd8a224a4990145a46ad098aa07a2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioFiles: []
+  AudioFiles: []
 --- !u!1 &6957446580565200042
 GameObject:
   m_ObjectHideFlags: 0
@@ -744,7 +744,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abdd8a224a4990145a46ad098aa07a2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioFiles: []
+  AudioFiles: []
 --- !u!1 &6957446581151054684
 GameObject:
   m_ObjectHideFlags: 0
@@ -1352,9 +1352,12 @@ MonoBehaviour:
   cesHint: 'Hint: Drag in battle profile assets to set up your combat encounter'
   Enemies:
   - {fileID: 11400000, guid: e47a68af746d72e409669e828073c09a, type: 2}
+  - {fileID: 11400000, guid: b3b5d420be43edf4f95c194181029d20, type: 2}
   PartyMembers:
-  - {fileID: 11400000, guid: b6c02c0d3705ae14e9db1810fcd102a7, type: 2}
   - {fileID: 11400000, guid: a14e1347ba70343448dac6d44f9a2067, type: 2}
+  - {fileID: 11400000, guid: e9edfc76e7ce58340a1c8a9e6dcf7935, type: 2}
+  - {fileID: 11400000, guid: 8f587846b7935ba4b9b7ba71a3d22c73, type: 2}
+  - {fileID: 11400000, guid: c8118a6e8e5f6b24f908447899ed719e, type: 2}
   CriticalHitModifier: 4
   ChanceToMiss: 0.0625
   DeathTint: {r: 1, g: 0.4481132, b: 0.4481132, a: 1}
@@ -1708,8 +1711,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 29.400146, y: 0}
+  m_SizeDelta: {x: 142.9, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6957446581709989742
 CanvasRenderer:

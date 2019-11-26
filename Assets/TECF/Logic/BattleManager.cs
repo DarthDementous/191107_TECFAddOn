@@ -133,11 +133,11 @@ namespace TECF
             Debug.Assert(priorityEnemy, "BATTLEMANAGER::No enemies set!");
 
             // Set enemy background
-            ReferenceManager.Instance.enemyBG.sprite = priorityEnemy.battleBG;
+            ReferenceManager.Instance.enemyBG.sprite = priorityEnemy.BattleBackground;
 
             // Add enemy audio to main system and secondary systems
-            ReferenceManager.Instance.mainAudio.AudioFiles.AddRange(priorityEnemy.battleSFX);
-            ReferenceManager.Instance.secondaryAudio.AudioFiles.AddRange(priorityEnemy.battleSFX);
+            ReferenceManager.Instance.mainAudio.AudioFiles.AddRange(priorityEnemy.BattleSFX);
+            ReferenceManager.Instance.secondaryAudio.AudioFiles.AddRange(priorityEnemy.BattleSFX);
 
             // Start battle music, playing intro first if there is one
             AudioClip introClip = ReferenceManager.Instance.mainAudio.HasClip("INTRO");
@@ -258,7 +258,7 @@ namespace TECF
         void OnRunThroughCommands(IEventInfo a_info)
         {
             // Sort list by sender turn order (highest to lowest)
-            _commandList.Sort((a, b) => -(CalcTurnVal(a.sender.BattleProfile.speed).CompareTo(CalcTurnVal(b.sender.BattleProfile.speed))));
+            _commandList.Sort((a, b) => -(CalcTurnVal(a.sender.BattleProfile.Speed).CompareTo(CalcTurnVal(b.sender.BattleProfile.Speed))));
 
             // Go through command list and execute appropriate actions
             foreach (var cmd in _commandList)
@@ -318,7 +318,7 @@ namespace TECF
 
                         /// 2. Check for dodge
                         int dodgeNum = Random.Range(0, 100);
-                        int dodgeChance = Mathf.RoundToInt(((2 * cmd.target.BattleProfile.speed - cmd.sender.BattleProfile.speed) / 500f) * 100);
+                        int dodgeChance = Mathf.RoundToInt(((2 * cmd.target.BattleProfile.Speed - cmd.sender.BattleProfile.Speed) / 500f) * 100);
 
                         // Dodge success
                         if (dodgeNum <= dodgeChance)
@@ -340,7 +340,7 @@ namespace TECF
 
                         /// 4. Check for critical hit
                         int critNum = Random.Range(0, 100);
-                        int firstCritChance = Mathf.RoundToInt((cmd.sender.BattleProfile.guts / 500f) * 100);
+                        int firstCritChance = Mathf.RoundToInt((cmd.sender.BattleProfile.Guts / 500f) * 100);
                         int secondCritChance = Mathf.RoundToInt((1f / 20f) * 100);
                         int critChance = Mathf.Max(firstCritChance, secondCritChance);
 
@@ -425,6 +425,19 @@ namespace TECF
             {
                 // Randomly pick a party member to attack
                 PartyEntity targetPlayer = GetPartyEntityBySlot((ePartySlot)Random.Range(0, PartyMembers.Length));
+
+                // Invalid target, find first conscious party member instead
+                if (targetPlayer.CurrentStatus == eStatusEffect.UNCONSCIOUS)
+                {
+                    foreach (var party in PartyEntities)
+                    {
+                        if (party.CurrentStatus != eStatusEffect.UNCONSCIOUS)
+                        {
+                            targetPlayer = party;
+                        }
+                    }
+                }
+
                 EnemyEntity senderEnemy = EnemyEntities[i];
 
                 _commandList.Add(new TECF.EntityCommand
@@ -481,7 +494,7 @@ namespace TECF
             {
                 // Regular bash
                 case eStatusEffect.NORMAL:
-                    dmg += a_attacker.BattleProfile.offense * (100f / (100f + (a_defender.BattleProfile.defense)));
+                    dmg += a_attacker.BattleProfile.Offense * (100f / (100f + (a_defender.BattleProfile.Defense)));
                     int percentModifier = (Random.Range(0, 2) == 0 ? 1 : -1);
                     dmg += dmg * 0.25f * percentModifier;
                     break;

@@ -8,25 +8,18 @@ namespace TECF
 {
     public class BattleEntity : MonoBehaviour
     {
-        #region Public Facing Variables
         [Header("References")]
-        public TextMeshProUGUI HealthText;
-        public TextMeshProUGUI PowerText;
-        public Text NameText;
         public Image EntityImage;
-        public GameObject HpObj;
-        public GameObject PPObj;
-        #endregion
 
         #region Public Variables
+        [HideInInspector]
         public eEntityType EntityType;
-
-        // Current affliction on the entity, will affect their behaviour if it isn't NORMAL
-        public eStatusEffect CurrentStatus;
-
+        [HideInInspector]
+        public eStatusEffect CurrentStatus;     // Current affliction on the entity, will affect their behaviour if it isn't NORMAL
+        [HideInInspector]
         public string EntityName;
 
-        public BattleProfile BattleProfile
+        public virtual BattleProfile BattleProfile
         {
             get
             {
@@ -37,28 +30,25 @@ namespace TECF
                 battleProfile = value;
 
                 // Set starting hp and power values
-                Hp = battleProfile.hp;
-                Power = battleProfile.power;
-
-                // Set name
-                if (NameText) NameText.text = battleProfile.entityName;
+                Hp = battleProfile.Hp;
+                Power = battleProfile.Power;
 
                 var enemy = this as EnemyEntity;
                 var party = this as PartyEntity;
                 if (enemy)
                 {
-                    EntityName = enemy.battleProfile.entityName + " " + enemy.enemySlot;
+                    EntityName = enemy.battleProfile.EntityName + " " + enemy.enemySlot;
                 }
                 else
                 {
-                    EntityName = battleProfile.entityName;
+                    EntityName = battleProfile.EntityName;
                 }
 
                 // Set sprite and scale
                 if (EntityImage)
                 {
-                    EntityImage.sprite = battleProfile.battleSprite;
-                    EntityImage.rectTransform.sizeDelta = EntityImage.rectTransform.sizeDelta * battleProfile.entityScale;
+                    EntityImage.sprite = battleProfile.BattleSprite;
+                    EntityImage.rectTransform.sizeDelta = EntityImage.rectTransform.sizeDelta * battleProfile.EntityScale;
                 }
             }
         }
@@ -100,13 +90,11 @@ namespace TECF
         protected virtual void OnEnable()
         {
             EventManager.StartListening("TakeDamage", OnTakeDamage);
-            EventManager.StartListening("Heal", OnHeal);
         }
 
         protected virtual void OnDisable()
         {
             EventManager.StopListening("TakeDamage", OnTakeDamage);
-            EventManager.StopListening("Heal", OnHeal);
         }
 
         /**
@@ -126,19 +114,16 @@ namespace TECF
                     output[0] = 0;
                     output[1] = 0;
                     output[2] = int.Parse(numStr[0].ToString());
-                    //output = "00" + numStr[0];
                     break;
                 case 2:
                     output[0] = 0;
                     output[1] = int.Parse(numStr[0].ToString());
                     output[2] = int.Parse(numStr[1].ToString());
-                    //output = "0" + numStr[0] + "" + numStr[1];
                     break;
                 case 3:
                     output[0] = int.Parse(numStr[0].ToString());
                     output[1] = int.Parse(numStr[1].ToString());
                     output[2] = int.Parse(numStr[2].ToString());
-                    //output = "" + numStr[0] + "" + numStr[1] + "" + numStr[2];
                     break;
                 default:
                     output = (digits != 0) ? new int[] { 9, 9, 9 } : new int[] { 0, 0, 0 };
@@ -167,18 +152,5 @@ namespace TECF
         }
 
         protected virtual void DamageHealth(int a_dmg) { }
-
-
-        void OnHeal(IEventInfo a_info)
-        {
-            //int targetHealth = Hp + a_healAmount;
-
-            //while (Hp < targetHealth)
-            //{
-            //    Hp++;
-
-            //    yield return new WaitForSeconds(BattleManager.Instance.BaseDecayRate);
-            //}
-        }
     }
 }

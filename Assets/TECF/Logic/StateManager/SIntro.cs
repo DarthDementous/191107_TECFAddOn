@@ -16,7 +16,7 @@ public class SIntro : IState
 
         if (BattleManager.Instance.Enemies.Length != 0)     // At least one enemy
         {
-            enemyTxt += BattleManager.Instance.Enemies[0].entityName;
+            enemyTxt += BattleManager.Instance.Enemies[0].EntityName;
         }
         if (BattleManager.Instance.Enemies.Length > 1 && BattleManager.Instance.Enemies.Length < 3) // Two enemies
         {

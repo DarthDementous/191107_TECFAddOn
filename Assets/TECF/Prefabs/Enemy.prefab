@@ -89,17 +89,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d5e43e0e36f9549b564ede3653d4ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityType: 0
-  currentStatus: 0
-  entityName: 
-  healthTxt: {fileID: 0}
-  powerTxt: {fileID: 0}
-  nameTxt: {fileID: 0}
-  entityImg: {fileID: 7072766671656112339}
-  hpObj: {fileID: 0}
-  ppObj: {fileID: 0}
+  HealthText: {fileID: 0}
+  PowerText: {fileID: 0}
+  NameText: {fileID: 0}
+  EntityImage: {fileID: 7072766671656112339}
+  HpObj: {fileID: 0}
+  PPObj: {fileID: 0}
+  EntityType: 1
+  CurrentStatus: 0
+  EntityName: 
   enemySlot: 0
-  anim: {fileID: 0}
+  anim: {fileID: 7459673875806317240}
 --- !u!95 &7459673875806317240
 Animator:
   serializedVersion: 3

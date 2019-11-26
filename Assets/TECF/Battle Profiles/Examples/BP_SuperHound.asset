@@ -12,19 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d5b3dc90b86f7340b0119f2657c9ed4, type: 3}
   m_Name: BP_SuperHound
   m_EditorClassIdentifier: 
-  entityName: Super Hound
-  entityScale: 2
-  battleSprite: {fileID: 21300000, guid: 7558ff8024a1a8548bba31579c47a252, type: 3}
-  battleBG: {fileID: 21300000, guid: 86ab2367c357d104bba47ead6a19f2c2, type: 3}
-  battleSFX:
-  - alias: LOOP
-    audio: {fileID: 8300000, guid: 7993f84a1a94ef14a8f08edc5d0f395c, type: 3}
+  EntityName: Super Hound
+  EntityScale: 2
+  BattleSprite: {fileID: 21300000, guid: 7558ff8024a1a8548bba31579c47a252, type: 3}
+  BattleBackground: {fileID: 21300000, guid: 86ab2367c357d104bba47ead6a19f2c2, type: 3}
+  BattleSFX:
   - alias: INTRO
     audio: {fileID: 8300000, guid: 503951d14ab5ff94f847eb937af7f45d, type: 3}
-  hp: 600
-  power: 0
-  guts: 20
-  luck: 20
-  speed: 40
-  offense: 80
-  defense: 140
+  - alias: LOOP
+    audio: {fileID: 8300000, guid: 7993f84a1a94ef14a8f08edc5d0f395c, type: 3}
+  Hp: 1672
+  Power: 0
+  Offense: 159
+  Defense: 174
+  Speed: 31
+  Guts: 52

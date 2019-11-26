@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d5b3dc90b86f7340b0119f2657c9ed4, type: 3}
   m_Name: BP_PartyMember3
   m_EditorClassIdentifier: 
-  entityName: Bort
-  battleSprite: {fileID: 0}
-  battleBG: {fileID: 0}
-  battleSFX: []
-  hp: 50
-  power: 80
-  guts: 20
-  luck: 10
-  speed: 20
-  offense: 160
-  defense: 40
+  EntityName: Darkspeed
+  EntityScale: 1
+  BattleSprite: {fileID: 0}
+  BattleBackground: {fileID: 0}
+  BattleSFX: []
+  Hp: 300
+  Power: 0
+  Offense: 40
+  Defense: 80
+  Speed: 20
+  Guts: 15

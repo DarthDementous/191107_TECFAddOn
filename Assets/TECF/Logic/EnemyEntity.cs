@@ -14,10 +14,11 @@ namespace TECF
             EntityType = eEntityType.ENEMY;
         }
 
+        #region Public Variables
+        [HideInInspector]
         public eEnemySlot enemySlot;
+        [HideInInspector]
         public Animator anim;
-
-        bool isDefeated = false;
 
         public override int Hp
         {
@@ -39,8 +40,8 @@ namespace TECF
                         endDialogFuncDelay = BattleManager.Instance.ActionLineSwitchRate,
                         startDialogFunc = () =>
                         {
-                        // Let the battle manager know an enemy has been tamed
-                        EventManager.TriggerEvent("TameEnemy");
+                            // Let the battle manager know an enemy has been tamed
+                            EventManager.TriggerEvent("TameEnemy");
 
                             CurrentStatus = eStatusEffect.UNCONSCIOUS;
                             OnTameEnemy();
@@ -51,6 +52,9 @@ namespace TECF
                 }
             }
         }
+        #endregion
+
+        bool isDefeated = false;
 
         private void Awake()
         {
@@ -107,7 +111,7 @@ namespace TECF
             if (enemyInfo != null && enemyInfo.enemy == this)
             {
                 // Update selected name
-                ReferenceManager.Instance.enemySelectPanelText.text = "To " + battleProfile.entityName + " " + enemySlot.ToString();
+                ReferenceManager.Instance.enemySelectPanelText.text = "To " + battleProfile.EntityName + " " + enemySlot.ToString();
 
                 // Update selected slot
                 BattleManager.Instance.CurrEnemySelect = enemyInfo.enemy.enemySlot;

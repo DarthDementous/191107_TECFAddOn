@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d5b3dc90b86f7340b0119f2657c9ed4, type: 3}
   m_Name: BP_PartyMember4
   m_EditorClassIdentifier: 
-  entityName: Chlonk
-  battleSprite: {fileID: 0}
-  battleBG: {fileID: 0}
-  battleSFX: []
-  hp: 300
-  power: 10
-  guts: 30
-  luck: 6
-  speed: 13
-  offense: 120
-  defense: 67
+  EntityName: Yagatorus
+  EntityScale: 1
+  BattleSprite: {fileID: 0}
+  BattleBackground: {fileID: 0}
+  BattleSFX: []
+  Hp: 300
+  Power: 0
+  Offense: 40
+  Defense: 80
+  Speed: 20
+  Guts: 15

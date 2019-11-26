@@ -822,17 +822,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29d357dcf192dba4ab0650c54c724665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityType: 2
-  currentStatus: 0
-  entityName: 
-  healthTxt: {fileID: 7932556362742222659}
-  powerTxt: {fileID: 3317124841115371566}
-  nameTxt: {fileID: 4190937684310772042}
-  entityImg: {fileID: 0}
-  hpObj: {fileID: 8898129015105472798}
-  ppObj: {fileID: 0}
-  partySlot: 0
+  EntityImage: {fileID: 0}
+  EntityType: 2
+  CurrentStatus: 0
+  EntityName: 
+  HealthText: {fileID: 0}
+  PowerText: {fileID: 0}
+  NameText: {fileID: 4190937684310772042}
+  HpObj: {fileID: 8898129015105472798}
+  PPObj: {fileID: 1392312637115888832}
   readyOffset: 50
+  partySlot: 0
 --- !u!114 &632624151090996088
 MonoBehaviour:
   m_ObjectHideFlags: 0

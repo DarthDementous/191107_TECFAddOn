@@ -10,13 +10,36 @@ namespace TECF
     {
         public PartyEntity() { EntityType = eEntityType.PARTY; }
 
-        [Tooltip("Which slot this party member corresponds to. Assigned by the BattleManager.")]
-        public ePartySlot partySlot;
+        #region Public Facing Variables
+        [Header("References")]
+
+        public TextMeshProUGUI HealthText;
+        public TextMeshProUGUI PowerText;
+        public Text NameText;
+        public GameObject HpObj;
+        public GameObject PPObj;
+
+        [Header("Frame Settings")]
 
         [Tooltip("How high up to move the party frame when in the ready position.")]
         public float readyOffset = 50f;
+        #endregion
 
-        bool b_isFainted;
+        #region Public Variables
+        public override BattleProfile BattleProfile
+        {
+            get
+            {
+                return base.BattleProfile;
+            }
+            set
+            {
+                base.BattleProfile = value;
+
+                // Set name
+                if (NameText) NameText.text = battleProfile.EntityName;
+            }
+        }
 
         public override int Hp
         {
@@ -57,6 +80,12 @@ namespace TECF
                 }
             }
         }
+        #endregion
+
+        [HideInInspector]
+        public ePartySlot partySlot;
+
+        bool b_isFainted;
 
         protected override void DamageHealth(int a_dmg)
         {
@@ -124,7 +153,7 @@ namespace TECF
                 }
 
                 // Update action panel data
-                ReferenceManager.Instance.actionPanelName.text = battleProfile.entityName;
+                ReferenceManager.Instance.actionPanelName.text = battleProfile.EntityName;
 
                 // Visually move into ready position
                 gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, readyOffset, gameObject.transform.localPosition.z);
